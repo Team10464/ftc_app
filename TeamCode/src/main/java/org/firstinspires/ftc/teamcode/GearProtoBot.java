@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.GyroSensor;
  * Created by jonathonmangan on 9/6/17.
  */
 @TeleOp(name="Gear Protobot Tank", group="GearProtobot")
-public class GearProtoBot extends OpMode{
+public abstract class GearProtoBot extends OpMode {
 
 
     private DcMotor motorUpRight;
@@ -25,20 +25,33 @@ public class GearProtoBot extends OpMode{
         motorDownLeft = hardwareMap.dcMotor.get("downLeft");
         motorUpLeft = hardwareMap.dcMotor.get("upLeft");
     }
-    public void loop(){
-        if(gamepad1.left_trigger > .1 || gamepad1.right_trigger > .1){
-            if(gamepad1.left_trigger > gamepad1.right_trigger){
+
+    public void loop(double heading) {
+        if (gamepad1.left_trigger > .1 || gamepad1.right_trigger > .1) {
+            if (gamepad1.left_trigger > gamepad1.right_trigger) {
                 motorUpLeft.setPower(gamepad1.left_trigger);
                 motorDownLeft.setPower(gamepad1.left_trigger);
-            }else{
-                motorUpRight.setPower(gamepad1.right_trigger);
+                motorDownRight.setPower(-gamepad1.left_trigger);
+                motorUpRight.setPower(-gamepad1.left_trigger);
+            } else {
+                motorUpLeft.setPower(-gamepad1.right_trigger);
+                motorDownLeft.setPower(-gamepad1.right_trigger);
                 motorDownRight.setPower(gamepad1.right_trigger);
+                motorUpRight.setPower(gamepad1.right_trigger);
             }
-        }else{
-            motorUpRight.setPower(gamepad1.left_stick_x);
-            motorUpLeft.setPower(gamepad1.left_stick_y);
-            motorDownLeft.setPower(gamepad1.left_stick_y);
-            motorDownRight.setPower(gamepad1.left_stick_x);
+        } else { // Sets robot movement vector independent of robot heading.
+            // Power coefficient
+            double P = ((Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) / 2));
+            // Robot heading
+            double H = (heading * Math.PI) / 180;
+            // heading of sticks
+            double Ht = (Math.PI - Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y));
+
+            motorDownLeft.setPower(P * Math.sin(H - Ht));
+            motorUpLeft.setPower(-P * Math.cos(H - Ht));
+            motorDownRight.setPower(-P * Math.cos(H - Ht));
         }
+
     }
+
 }

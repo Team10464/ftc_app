@@ -42,7 +42,7 @@ public class MechanumProtoBot extends OpMode {
         } else {
             double power = ((Math.abs(gamepad1.left_stick_y)+Math.abs(gamepad1.left_stick_x))/2);
             double head = (Math.PI * heading)/180;
-            double headSticks = 1;
+            double headSticks = 2;
 
 
 

@@ -35,10 +35,10 @@ public class GearProtoBot extends OpMode{
                 motorDownRight.setPower(gamepad1.right_trigger);
             }
         }else{
-            motorUpRight.setPower(gamepad1.left_stick_x);
-            motorUpLeft.setPower(gamepad1.left_stick_y);
-            motorDownLeft.setPower(gamepad1.left_stick_y);
-            motorDownRight.setPower(gamepad1.left_stick_x);
+            motorUpRight.setPower(gamepad1.left_stick_y);
+            motorUpLeft.setPower(gamepad1.right_stick_y);
+            motorDownLeft.setPower(gamepad1.right_stick_y);
+            motorDownRight.setPower(gamepad1.left_stick_y);
         }
     }
 }

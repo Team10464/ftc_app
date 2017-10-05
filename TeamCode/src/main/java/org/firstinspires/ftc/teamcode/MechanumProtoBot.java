@@ -27,25 +27,21 @@ public class MechanumProtoBot extends OpMode {
     public void loop(){
         int heading = gyro.getHeading();
 
-        if (gamepad1.left_trigger > .1 || gamepad1.right_trigger > .1){
-            if (gamepad1.left_trigger > gamepad1.right_trigger){
-                motorFrontRight.setPower(0);
-                motorFrontLeft.setPower(-gamepad1.left_trigger);
-                motorBackRight.setPower(gamepad1.left_trigger);
-                motorBackLeft.setPower(0);
-            } else {
-                motorFrontRight.setPower(-gamepad1.right_trigger);
-                motorFrontLeft.setPower(0);
-                motorBackRight.setPower(0);
-                motorBackLeft.setPower(gamepad1.right_trigger);
-            }
-        } else {
-            double power = ((Math.abs(gamepad1.left_stick_y)+Math.abs(gamepad1.left_stick_x))/2);
-            double head = (Math.PI * heading)/180;
-            double headSticks = 2;
+        double power = ((Math.abs(gamepad1.left_stick_y)+Math.abs(gamepad1.left_stick_x))/2);
+        double head = (Math.PI * heading)/180;
+        double headSticks = 2;
 
+        double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
+        double rightX = gamepad1.right_stick_x;
+        final double v1 = r * Math.cos(robotAngle) + rightX;
+        final double v2 = r * Math.sin(robotAngle) - rightX;
+        final double v3 = r * Math.sin(robotAngle) + rightX;
+        final double v4 = r * Math.cos(robotAngle) - rightX;
 
-
+        motorFrontLeft.setPower(v1);
+        motorFrontRight.setPower(v2);
+        motorBackLeft.setPower(v3);
+        motorBackRight.setPower(v4);
         }
     }
-}

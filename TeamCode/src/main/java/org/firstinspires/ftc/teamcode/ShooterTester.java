@@ -19,7 +19,6 @@ public class ShooterTester extends AutonomousBase{
                 }
                 break;
             case 1:
-                //I heart my uncle
                 cumDist += dDistW;
                 moveState = MoveState.SHOOT_WHEEL;
                 if(sTime > 1){

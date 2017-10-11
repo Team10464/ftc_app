@@ -41,6 +41,7 @@ public class MechanumProtoBot extends OpMode
     }
     public void loop()
     {
+        //here is error
         int reading = imu.readCalibrationData();
 
         double power = ((Math.abs(gamepad1.left_stick_y)+Math.abs(gamepad1.left_stick_x))/2);

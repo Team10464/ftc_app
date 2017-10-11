@@ -27,15 +27,11 @@ public abstract class AutonomousBase extends OpMode {
       public static final int LEFT = 3;
       public static final int RIGHT = 4;
       public static final int TURN_TOWARDS_GOAL = 5;
-      public static final int SHOOT = 6;
       public static final int SERVO_R = 7;
       public static final int SERVO_L = 8;
       public static final int BACKWARD_SLOW = 9;
       public static final int SERVO_M = 10;
-      public static final int SHOOT_STOP = 11;
       public static final int FULL_STOP = 12;
-      public static final int SHOOT_CONVEYOR = 13;
-      public static final int SHOOT_WHEEL = 14;
       public static final int STRAFE_TOWARDS_GOAL = 15;
       public static final int TURN_TOWARDS_ANGLE = 16;
       public static final int LEFT_SLOW = 17;
@@ -47,7 +43,7 @@ public abstract class AutonomousBase extends OpMode {
     }
 
 
-    DcMotor motorFrontRight
+    DcMotor motorFrontRight;
     DcMotor motorFrontLeft;
     DcMotor motorBackRight;
     DcMotor motorBackLeft;
@@ -123,7 +119,7 @@ public abstract class AutonomousBase extends OpMode {
     }
 
     public void moveState(){
-        heading = gyro.getHeading();
+       // heading = gyro.getHeading();
         switch(moveState){
             case MoveState.STOP:
                 // Halts all drivetrain movement of the robot
@@ -233,7 +229,7 @@ public abstract class AutonomousBase extends OpMode {
                     motorFrontLeft.setPower(power);
                     motorBackLeft.setPower(power);
                     motorBackRight.setPower(-power);
-                } CHECK THIS ONE-- BC I DON'T KNOW WHAT YOU WANT FOR ELSE
+                }
 
                 break;
             case MoveState.TURN_TOWARDS_ANGLE:
@@ -299,12 +295,6 @@ public abstract class AutonomousBase extends OpMode {
             case MoveState.SERVO_C:
                  servoCollector.setPosition(1);
                  break;
-             case MoveState.SHOOT:
-                // Shoots ball out of conveyor
-                motorLeftShooter.setPower(.6);
-                motorRightShooter.setPower(.6);
-                motorConveyor.setPower(1);
-                break;
             case MoveState.FULL_STOP:
                 // Stop ALL robot movement, and resets servo to default pos
                 servoRightButton.setPosition(.5);
@@ -316,15 +306,13 @@ public abstract class AutonomousBase extends OpMode {
                 motorConveyor.setPower(0);
                 break;
 
-                // Spins fly-wheels
-                break;
         }
         map.moveRobot(dDistS * DEGREES_TO_FEET, (heading+90%360));
         map.moveRobot(dDistF * DEGREES_TO_FEET, heading);
     }
 
     public void gameState(){
-        heading = gyro.getHeading();
+        //heading = gyro.getHeading();
 
         lDistF = cDistF;
         cDistF = ( motorBackLeft.getCurrentPosition()
@@ -335,10 +323,6 @@ public abstract class AutonomousBase extends OpMode {
         lDistS = cDistS;
         cDistS = ( motorFrontRight.getCurrentPosition()
                  + motorFrontLeft.getCurrentPosition()
-        ) / 2;
-        dDistS = cDistS - lDistS;
-
-        lDistW = cDistW;
         ) / 2;
         dDistW = cDistW - lDistW;
 

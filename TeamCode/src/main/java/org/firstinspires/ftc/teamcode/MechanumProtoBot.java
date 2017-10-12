@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcontroller.external.samples.SensorBNO055IMU;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
@@ -41,12 +40,7 @@ public class MechanumProtoBot extends OpMode
     }
     public void loop()
     {
-        //here is said error 1
-        int reading = imu.readCalibrationData();
 
-        double power = ((Math.abs(gamepad1.left_stick_y)+Math.abs(gamepad1.left_stick_x))/2);
-        double head = (Math.PI * reading)/180;
-        double headSticks = 2;
 
         double r = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;

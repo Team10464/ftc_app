@@ -57,7 +57,7 @@ public abstract class AutonomousBase extends OpMode {
     //TouchSensor touchWall;
     ColorSensor colorLeft;
     ColorSensor colorRight;
-    //GyroSensor gyro;
+    GyroSensor gyro;
 
 
     //We stateful now

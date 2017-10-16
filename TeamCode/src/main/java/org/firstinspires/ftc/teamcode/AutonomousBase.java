@@ -19,7 +19,7 @@ public abstract class AutonomousBase extends OpMode {
     // This converts encoder ticks into feet.
     //**WARNING** Always calculate distance CHANGED, since encoders have no
     // concept of direction, and we are moving across a 2D plane.
-    
+
     public static class MoveState{
       public static final int STOP = 0;
       public static final int FORWARD = 1;
@@ -57,7 +57,7 @@ public abstract class AutonomousBase extends OpMode {
     //TouchSensor touchWall;
     ColorSensor colorLeft;
     ColorSensor colorRight;
-    //GyroSensor gyro;
+    GyroSensor gyro;
 
 
     //We stateful now
@@ -114,8 +114,8 @@ public abstract class AutonomousBase extends OpMode {
         colorLeft.enableLed(false);
         colorRight.enableLed(false);
 
-        //gyro = hardwareMap.gyroSensor.get("gyro");
-        //gyro.calibrate();
+        gyro = hardwareMap.gyroSensor.get("gyro");
+        gyro.calibrate();
     }
 
     public void moveState(){

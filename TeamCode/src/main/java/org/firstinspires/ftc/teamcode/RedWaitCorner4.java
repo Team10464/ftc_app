@@ -1,13 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.media.audiofx.AutomaticGainControl;
-
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 /**
  * Created by jonathonmangan on 12/28/16.
  */
-@Autonomous (name = "Red Wait Corner 4", group = "Red")
+/**@Autonomous (name = "Red Wait Corner 4", group = "Red")
 public class RedWaitCorner4 extends AutonomousBase {
     @Override
     public void gameState() {
@@ -75,3 +71,4 @@ public class RedWaitCorner4 extends AutonomousBase {
         }
     }
 }
+**/

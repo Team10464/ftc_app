@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 /**
  * Created by Sean O on 11/23/2016.
  */
-@Autonomous(name="Blue Wait 6", group="Blue")
+/**@Autonomous(name="Blue Wait 6", group="Blue")
 public class BlueWait6 extends AutonomousBase {
     @Override
     public void gameState() {
@@ -65,3 +63,4 @@ public class BlueWait6 extends AutonomousBase {
         }
     }
 }
+**/

@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 /**
  * Created by Sean O on 11/23/2016.
  */
-@Autonomous(name="Red Shoot 6", group="Red")
+/**@Autonomous(name="Red Shoot 6", group="Red")
 public class RedShoot6 extends AutonomousBase {
     @Override
     public void gameState() {
@@ -66,3 +64,4 @@ public class RedShoot6 extends AutonomousBase {
         } 
     }
 }
+**/

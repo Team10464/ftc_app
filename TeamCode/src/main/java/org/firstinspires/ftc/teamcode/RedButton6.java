@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 /**
  * Created by Sean Ovens on 10/26/2016.
  */
-@Autonomous(name="Red Button 6", group="Red")
+/**@Autonomous(name="Red Button 6", group="Red")
 public class RedButton6 extends AutonomousBase{
     double xTime;
     @Override
@@ -101,7 +99,7 @@ public class RedButton6 extends AutonomousBase{
                 }/*else{
                     map.setRobot(0,7); //Since we're positive of our position after pressing the button, we might as well use that
                 }*/
-                break;
+            /**    break;
             case 8: //Move to beacon B push pos.
                 map.setGoal(map.getRobotX(), 5.5);
                 if(linedUp()){
@@ -126,7 +124,7 @@ public class RedButton6 extends AutonomousBase{
                     moveState = MoveState.TURN_TOWARDS_ANGLE_SLOW;
                 }
                 break;*/
-            case 10: //Move to wall
+            /**case 10: //Move to wall
                 map.setGoal(0, map.getRobotY());
                 if(!touchWall.isPressed()){
                     moveState = MoveState.RIGHT_SLOW;
@@ -179,3 +177,4 @@ public class RedButton6 extends AutonomousBase{
         }
    }
 }
+**/

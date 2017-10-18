@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 /**
  * Created by Sean Ovens on 10/26/2016.
  */
-@Autonomous(name="Blue Button 6", group="Blue")
+/**@Autonomous(name="Blue Button 6", group="Blue")
 public class BlueButton6 extends AutonomousBase{
     double xTime;
     int i;
@@ -218,3 +216,4 @@ public class BlueButton6 extends AutonomousBase{
             }
    }
 }
+**/

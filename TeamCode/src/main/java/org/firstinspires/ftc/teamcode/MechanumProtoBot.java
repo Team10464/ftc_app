@@ -50,7 +50,8 @@ public class MechanumProtoBot extends OpMode
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
         motorBackRight.setPower(v3);
-        motorBackLeft.setPower(v4);
+
+        //:)
     }
 
 }

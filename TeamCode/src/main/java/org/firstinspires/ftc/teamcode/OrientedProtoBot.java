@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.GyroSensor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 /**
@@ -15,160 +16,78 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class OrientedProtoBot extends OpMode {
 
-    private DcMotor motorUp;
-    private DcMotor motorDown;
-    private DcMotor motorLeft;
-    private DcMotor motorRight;
-    private DcMotor motorRightShooter;
-    private DcMotor motorLeftShooter;
-    private DcMotor motorConveyer;
-    private DcMotor motorCap;
-    private Servo servoCollector;
-    private Servo servoCapSqueeze;
-    private Servo servoCapRelease;
-    private Servo servoBeaconDeploy;
-    private Servo servoLeftButton;
-    private Servo servoRightButton;
-    private TouchSensor touchRight;
-    private GyroSensor gyro;
+    private DcMotor motorFrontRight;
+    private DcMotor motorBackLeft;
+    private DcMotor motorBackRight;
+    private DcMotor motorFrontLeft;
     private double resetTime;
     private int cDist, lDist, dDist, tDist;
 
+
+    BNO055IMU imu;
+
+    // State used for updating telemetry
+    Orientation angles;
+    Acceleration gravity;
+
+
     public void init(){
-        motorUp = hardwareMap.dcMotor.get("front");
-        motorDown = hardwareMap.dcMotor.get("back");
-        motorLeft = hardwareMap.dcMotor.get("left");
-        motorRight = hardwareMap.dcMotor.get("right");
-        
-        motorRightShooter = hardwareMap.dcMotor.get("r_shoot");
-        motorLeftShooter = hardwareMap.dcMotor.get("l_shoot");
-        motorConveyer = hardwareMap.dcMotor.get("conveyor");
-        motorCap = hardwareMap.dcMotor.get("cap_ball");
+        motorFrontRight = hardwareMap.dcMotor.get("front");
+        motorBackLeft = hardwareMap.dcMotor.get("back");
+        motorBackRight = hardwareMap.dcMotor.get("left");
+        motorFrontLeft = hardwareMap.dcMotor.get("right");
 
-        servoCollector = hardwareMap.servo.get("collector");
-        servoLeftButton = hardwareMap.servo.get("l_button");
-        servoRightButton = hardwareMap.servo.get("r_button");
-        servoCapSqueeze = hardwareMap.servo.get("cap_squeeze");
-        servoCapRelease = hardwareMap.servo.get("cap_release");
-        servoBeaconDeploy = hardwareMap.servo.get("b_servo");
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
 
-        touchRight = hardwareMap.touchSensor.get("right_touch");
-        gyro = hardwareMap.gyroSensor.get("gyro");
-        gyro.calibrate();
+// Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
+// on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
+// and named "imu".
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameters);
 
-        motorUp.setDirection(DcMotor.Direction.REVERSE);
-        motorLeft.setDirection(DcMotor.Direction.REVERSE);
-        motorRightShooter.setDirection(DcMotor.Direction.REVERSE);
     }
-    public void loop(){
-        int heading = gyro.getHeading();
-        // Used to get spin speed of shooting motors
-        // lDist - last read encoder value
-        // cDist - current encoder value
-        // dDist - encoder degrees between lDist and cDist (distance traveled)
-        // tDist - total distance traveled since we reset
-        // resetTime - time since reset
+    public void loop()
+    {
+
         lDist = cDist;
-        cDist = motorRightShooter.getCurrentPosition();
-        dDist = cDist - lDist; 
+        dDist = cDist - lDist;
         tDist += dDist;
         // motorspeed = dx/dt * (60 seconds/1 minute) * (1 rotation/1120 encoder degrees) = (rotations/minute)
         double motorSpeed = 60*tDist/(getRuntime() - resetTime)/1120;
 
         // Drivetrain controls
-        if(gamepad1.left_trigger > .1 || gamepad1.right_trigger > .1){
-            if(gamepad1.left_trigger > gamepad1.right_trigger){
-                motorUp.setPower(gamepad1.left_trigger);
-                motorLeft.setPower(gamepad1.left_trigger);
-                motorDown.setPower(-gamepad1.left_trigger);
-                motorRight.setPower(-gamepad1.left_trigger);
-            }else{
-                motorUp.setPower(-gamepad1.right_trigger);
-                motorLeft.setPower(-gamepad1.right_trigger);
-                motorDown.setPower(gamepad1.right_trigger);
-                motorRight.setPower(gamepad1.right_trigger);
-            }
-        }else { // Sets robot movement vector independent of robot heading.
-            // Power coefficient
-            double P = ((Math.abs(gamepad1.left_stick_y) + Math.abs(gamepad1.left_stick_x) / 2));
-            // Robot heading
-            double H = (heading * Math.PI) / 180;
-            // heading of sticks
-            double Ht = (Math.PI - Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y));
+        if(gamepad1.left_trigger > .1 || gamepad1.right_trigger > .1)
+        {
+            double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
+            double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
+            double rightX = gamepad1.left_stick_x;
+            final double v1 = r * Math.cos(robotAngle) + rightX;
+            final double v2 = r * Math.sin(robotAngle) + rightX;
+            final double v3 = r * Math.sin(robotAngle) - rightX;
+            final double v4 = r * Math.cos(robotAngle) - rightX;
 
-            motorUp.setPower(P * Math.sin(H - Ht));
-            motorDown.setPower(P * Math.sin(H - Ht));
-            motorLeft.setPower(-P * Math.cos(H - Ht));
-            motorRight.setPower(-P * Math.cos(H - Ht));
-        }
+            motorFrontRight.setPower(v1);
+            motorFrontLeft.setPower(v2);
+            motorBackRight.setPower(v3);
+            motorBackLeft.setPower(v4);
 
-        // Activates collectors
-        if(gamepad2.x){
-            servoCollector.setPosition(1);
-        }else if(gamepad2.y){
-            servoCollector.setPosition(0);
-        }else{
-            servoCollector.setPosition(.5);
-        }
-
-        // GAME PAD 2 CODE
-        // Activates shooters
-        if(gamepad2.left_trigger > .1){
-            motorRightShooter.setPower(1);
-            motorLeftShooter.setPower(1);
-        }else if(gamepad2.right_trigger > .65){
-            motorRightShooter.setPower(-1);
-            motorLeftShooter.setPower(-1);
-        }else{
-            motorRightShooter.setPower(0);
-            motorLeftShooter.setPower(0);
-        }
-
-        // Activates Conveyer
-        if(gamepad2.a){
-            motorConveyer.setPower(1);
-        }
-        else if(gamepad2.b){
-            motorConveyer.setPower(-1);
-        }
-        else{
-            motorConveyer.setPower(0);
-        }
-        // Cap Ball code
-        if(gamepad2.dpad_up) {
-            motorCap.setPower(1);
-        } else if (gamepad2.dpad_down) {
-            motorCap.setPower(-1);
-        }else{
-            motorCap.setPower(0);
-        }
-        if(gamepad2.right_bumper){
-            servoCapSqueeze.setPosition(1);
-        } else if(gamepad2.left_bumper) {
-            servoCapSqueeze.setPosition(0);
-        }
-        if(gamepad2.dpad_right){
-            servoCapRelease.setPosition(1);
-        }else if(gamepad2.dpad_left){
-            servoCapRelease.setPosition(0);
-        }else{
-            servoRightButton.setPosition(.5);
         }
 
         if(gamepad1.left_stick_button){
-            gyro.calibrate();
+        //    imu.writeCalibrationData(BNO055IMU.CalibrationData);
         }
-        /*if(gamepad1.dpad_left){
-            servoBeaconDeploy.setPosition(1);
-        } else{
-            servoBeaconDeploy.setPosition(.5);
-        }*/
+
         // Put telemetry here
         telemetry.addData("motor speed", motorSpeed);
-        telemetry.addData("theta", heading);
-        telemetry.addData("motor 1", motorUp.getCurrentPosition());
-        telemetry.addData("motor 2", motorDown.getCurrentPosition());
-        telemetry.addData("motor 3", motorLeft.getCurrentPosition());
-        telemetry.addData("motor 4", motorRight.getCurrentPosition());
+        telemetry.addData("theta", imu.getAngularOrientation());
+        telemetry.addData("motor 1", motorFrontRight.getCurrentPosition());
+        telemetry.addData("motor 2", motorFrontLeft.getCurrentPosition());
+        telemetry.addData("motor 3", motorBackRight.getCurrentPosition());
+        telemetry.addData("motor 4", motorFrontLeft.getCurrentPosition());
     }
 }

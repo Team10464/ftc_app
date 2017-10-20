@@ -49,12 +49,6 @@ public class MechanumProtoBot extends OpMode
         motorBackLeft.setPower(v4);
 
 
-
-        telemetry.addData("theta", imu.getAngularOrientation());
-        telemetry.addData("motor 1", motorFrontRight.getCurrentPosition());
-        telemetry.addData("motor 2", motorFrontLeft.getCurrentPosition());
-        telemetry.addData("motor 3", motorBackRight.getCurrentPosition());
-        telemetry.addData("motor 4", motorFrontLeft.getCurrentPosition());
     }
 
         //:)

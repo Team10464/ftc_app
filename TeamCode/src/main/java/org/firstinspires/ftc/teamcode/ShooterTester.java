@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-
 /**
  * Created by Sean Ovens on 10/26/2016.
  */
-@Autonomous(name="Shooter Tester", group="Test")
+/**@Autonomous(name="Shooter Tester", group="Test")
 public class ShooterTester extends AutonomousBase{
     private double cumDist;
     @Override
@@ -29,3 +27,4 @@ public class ShooterTester extends AutonomousBase{
         }
    }
 }
+**/

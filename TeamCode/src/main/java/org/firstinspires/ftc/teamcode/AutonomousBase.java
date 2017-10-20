@@ -27,32 +27,22 @@ public abstract class AutonomousBase extends OpMode {
       public static final int LEFT = 3;
       public static final int RIGHT = 4;
       public static final int TURN_TOWARDS_GOAL = 5;
-      public static final int SERVO_R = 7;
-      public static final int SERVO_L = 8;
       public static final int BACKWARD_SLOW = 9;
-      public static final int SERVO_M = 10;
       public static final int FULL_STOP = 12;
       public static final int STRAFE_TOWARDS_GOAL = 15;
       public static final int TURN_TOWARDS_ANGLE = 16;
       public static final int LEFT_SLOW = 17;
       public static final int RIGHT_SLOW = 18;
       public static final int TURN_TOWARDS_ANGLE_SLOW= 19;
-      public static final int SERVO_DEPLOY = 20;
-      public static final int SERVO_C = 21;
-      public static final int SERVO_DEPLOY_STOP = 22;
-    }
+
 
 
     DcMotor motorFrontRight;
     DcMotor motorFrontLeft;
     DcMotor motorBackRight;
     DcMotor motorBackLeft;
-
     DcMotor motorConveyor;
-    Servo servoCollector;
-    //Servo servoLeftButton;
-    Servo servoRightButton;
-    Servo servoBeaconDeploy;
+
     //TouchSensor touchRight;
     //TouchSensor touchWall;
     ColorSensor colorLeft;
@@ -71,9 +61,9 @@ public abstract class AutonomousBase extends OpMode {
     int cDistF, lDistF, dDistF; //Forward distance variables
     int cDistS, lDistS, dDistS; //Sideways distance variables
     int cDistW, lDistW, dDistW; //Sideways distance variables
-    double sTime; //Shooting timer
-    double pTime; //Button presser timer
-    double tDiff;
+    //double sTime; //Shooting timer
+    //double pTime; //Button presser timer
+    //double tDiff;
 
     int startPos = 6;
     Map map = new Map(startPos); //this map object will allow for easy manipulations.
@@ -89,33 +79,26 @@ public abstract class AutonomousBase extends OpMode {
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
-
-
         motorConveyor = hardwareMap.dcMotor.get("conveyor");
 
 
-        servoCollector = hardwareMap.servo.get("collector");
-        //servoLeftButton = hardwareMap.servo.get("l_button");
-        servoRightButton = hardwareMap.servo.get("r_button");
-        servoBeaconDeploy = hardwareMap.servo.get("b_servo");
 
         //touchRight = hardwareMap.touchSensor.get("right_touch");
         //touchWall = hardwareMap.touchSensor.get("wall_touch");
 
-        I2cAddr colorAddrLeft = I2cAddr.create8bit(0x3C);
+       /* I2cAddr colorAddrLeft = I2cAddr.create8bit(0x3C);
         I2cAddr colorAddrRight = I2cAddr.create8bit(0x4C);
         colorLeft = hardwareMap.colorSensor.get("color_l");
         colorRight = hardwareMap.colorSensor.get("color_r");
         colorLeft.setI2cAddress(colorAddrLeft);
         colorRight.setI2cAddress(colorAddrRight);
         colorLeft.enableLed(false);
-        colorRight.enableLed(false);
+        colorRight.enableLed(false); */
 
-        gyro = hardwareMap.gyroSensor.get("gyro");
-        gyro.calibrate();
+        //gyro = hardwareMap.gyroSensor.get("gyro");
+        //gyro.calibrate();
     }
 
     public void moveState(){
@@ -198,7 +181,7 @@ public abstract class AutonomousBase extends OpMode {
                     motorBackLeft.setPower(-power);
                     motorBackRight.setPower(power);
                 }
-                break;
+               /* break;
             case MoveState.STRAFE_TOWARDS_GOAL:
                 // Moves the bot towards the goal, while always pointing at desiredAngle
                 double P = 1;
@@ -208,8 +191,8 @@ public abstract class AutonomousBase extends OpMode {
                 motorFrontRight.setPower(-P * Math.sin(H - Ht));
                 motorFrontLeft.setPower(-P * Math.sin(H - Ht));
                 motorBackLeft.setPower(P * Math.cos(H - Ht));
-                motorBackRight.setPower(P * Math.cos(H - Ht));
-                break;
+                motorBackRight.setPower(P * Math.cos(H - Ht)); */
+               /* break;
             case MoveState.TURN_TOWARDS_GOAL:
                 // Orients the bot to face the goal
                 power = .25;
@@ -229,7 +212,7 @@ public abstract class AutonomousBase extends OpMode {
                     motorFrontLeft.setPower(power);
                     motorBackLeft.setPower(power);
                     motorBackRight.setPower(-power);
-                }
+                }*/
 
                 break;
             case MoveState.TURN_TOWARDS_ANGLE:
@@ -273,38 +256,7 @@ public abstract class AutonomousBase extends OpMode {
                     motorBackLeft.setPower(power);
                     motorBackRight.setPower(-power);
                 }
-                break;
-            case MoveState.SERVO_R:
-                // Hits right button with wumbo
-                servoRightButton.setPosition(1);
-                break;
-            case MoveState.SERVO_L:
-                // Hits left button with wumbo
-                servoRightButton.setPosition(0);
-                break;
-            case MoveState.SERVO_DEPLOY:
-                servoBeaconDeploy.setPosition(1);
-                break;
-            case MoveState.SERVO_DEPLOY_STOP:
-                servoBeaconDeploy.setPosition(.5);
-                break;
-             case MoveState.SERVO_M:
-                // Retracts wumbo
-                servoRightButton.setPosition(.5);
-                break;
-            case MoveState.SERVO_C:
-                 servoCollector.setPosition(1);
-                 break;
-            case MoveState.FULL_STOP:
-                // Stop ALL robot movement, and resets servo to default pos
-                servoRightButton.setPosition(.5);
-                servoCollector.setPosition(.5);
-                motorFrontRight.setPower(0);
-                motorFrontLeft.setPower(0);
-                motorBackLeft.setPower(0);
-                motorBackRight.setPower(0);
-                motorConveyor.setPower(0);
-                break;
+
 
         }
         map.moveRobot(dDistS * DEGREES_TO_FEET, (heading+90%360));
@@ -332,13 +284,13 @@ public abstract class AutonomousBase extends OpMode {
     }
 
     public void telemetry(){
-        telemetry.addData("angle to goal ",map.angleToGoal());
+        /*telemetry.addData("angle to goal ",map.angleToGoal());
         telemetry.addData("Runtime ",getRuntime());
         telemetry.addData("colorLeft ","Left R: " + colorLeft.red() + " G: " + colorLeft.green() + " B: " + colorLeft.blue() + " A: " + colorLeft.alpha() + " RGBA: " + colorLeft.argb());
         telemetry.addData("colorRight ","Right R: " + colorRight.red() + " G: " + colorRight.green() + " B: " + colorRight.blue() + " A: " + colorRight.alpha() + " RGBA: " + colorRight.argb());
         telemetry.addData("dist from goal ",map.distanceToGoal());
         telemetry.addData("goal (x,y) ","(" +
-          map.getGoalX() + "," + 
+          map.getGoalX() + "," +
           map.getGoalY() + ")");
         telemetry.addData("Robot(x,y) ","(" +
           map.getRobotX() + "," + 
@@ -348,7 +300,7 @@ public abstract class AutonomousBase extends OpMode {
         telemetry.addData("Desired Angle", desiredAngle);
         telemetry.addData("moveState", moveState);
         telemetry.addData("gameState", gameState);
-        telemetry.addData("wumbo pos", servoRightButton.getPosition());
+        telemetry.addData("wumbo pos", servoRightButton.getPosition());*/
     }
 
     @Override
@@ -357,7 +309,7 @@ public abstract class AutonomousBase extends OpMode {
         moveState();
         telemetry();
     }
-    public boolean linedUp() {
+    /*public boolean linedUp() {
         if (Math.abs(heading - map.angleToGoal()) < HEADING_TOLERANCE || (heading > 360 - HEADING_TOLERANCE && map.angleToGoal() < HEADING_TOLERANCE || (heading < HEADING_TOLERANCE && map.angleToGoal() > 360 - HEADING_TOLERANCE))) {
             return true;
         } else {
@@ -392,3 +344,4 @@ public abstract class AutonomousBase extends OpMode {
         return getRuntime() - tDiff;
     }
 }
+*/

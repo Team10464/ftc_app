@@ -31,7 +31,7 @@ public class OrientedProtoBot extends OpMode {
     Acceleration gravity;
 
 
-    public void init(){
+    public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("front");
         motorBackLeft = hardwareMap.dcMotor.get("back");
         motorBackRight = hardwareMap.dcMotor.get("left");
@@ -51,25 +51,24 @@ public class OrientedProtoBot extends OpMode {
         imu.initialize(parameters);
 
     }
-    public void loop()
-    {
+
+    public void loop() {
 
         lDist = cDist;
         dDist = cDist - lDist;
         tDist += dDist;
         // motorspeed = dx/dt * (60 seconds/1 minute) * (1 rotation/1120 encoder degrees) = (rotations/minute)
-        double motorSpeed = 60*tDist/(getRuntime() - resetTime)/1120;
+        double motorSpeed = 60 * tDist / (getRuntime() - resetTime) / 1120;
 
         // Drivetrain controls
-        if(gamepad1.left_trigger > .1 || gamepad1.right_trigger > .1)
-        {
+        if (gamepad1.left_trigger > .1 || gamepad1.right_trigger > .1) {
             double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
             double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
             double rightX = gamepad1.left_stick_x;
-            final double v1 = r * Math.cos(robotAngle) + rightX;
-            final double v2 = r * Math.sin(robotAngle) + rightX;
-            final double v3 = r * Math.sin(robotAngle) - rightX;
-            final double v4 = r * Math.cos(robotAngle) - rightX;
+            final double v1 = r * Math.cos(robotAngle) - rightX;
+            final double v2 = r * Math.sin(robotAngle) - rightX;
+            final double v3 = r * Math.sin(robotAngle) + rightX;
+            final double v4 = r * Math.cos(robotAngle) + rightX;
 
             motorFrontRight.setPower(v1);
             motorFrontLeft.setPower(v2);
@@ -78,16 +77,5 @@ public class OrientedProtoBot extends OpMode {
 
         }
 
-        if(gamepad1.left_stick_button){
-        //    imu.writeCalibrationData(BNO055IMU.CalibrationData);
-        }
-
-        // Put telemetry here
-        telemetry.addData("motor speed", motorSpeed);
-        telemetry.addData("theta", imu.getAngularOrientation());
-        telemetry.addData("motor 1", motorFrontRight.getCurrentPosition());
-        telemetry.addData("motor 2", motorFrontLeft.getCurrentPosition());
-        telemetry.addData("motor 3", motorBackRight.getCurrentPosition());
-        telemetry.addData("motor 4", motorFrontLeft.getCurrentPosition());
     }
 }

@@ -1,13 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.*;
-
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  * Created by joannareese on 10/20/17.
- */
-
-public class Auton {
+  **/
+ @Autonomous(name = "AutonProtobot", group = "Protobot")
+public class Auton extends OpMode{
 
 
     private DcMotor motorFrontRight;

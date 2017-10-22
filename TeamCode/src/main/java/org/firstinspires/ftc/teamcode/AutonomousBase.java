@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
-import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.hardware.ColorSensor;
+import com.qualcomm.robotcore.hardware.I2cAddr;
 /**
  * Created by minds on 1/23/2016.
  */
@@ -49,7 +50,7 @@ public abstract class AutonomousBase extends OpMode {
 
     DcMotor motorConveyor;
     Servo servoCollector;
-    Servo servoLeftButton;
+    //Servo servoLeftButton;
     Servo servoRightButton;
     Servo servoBeaconDeploy;
     //TouchSensor touchRight;
@@ -97,7 +98,7 @@ public abstract class AutonomousBase extends OpMode {
 
 
         servoCollector = hardwareMap.servo.get("collector");
-        servoLeftButton = hardwareMap.servo.get("l_button");
+        //servoLeftButton = hardwareMap.servo.get("l_button");
         servoRightButton = hardwareMap.servo.get("r_button");
         servoBeaconDeploy = hardwareMap.servo.get("b_servo");
 
@@ -118,7 +119,7 @@ public abstract class AutonomousBase extends OpMode {
     }
 
     public void moveState(){
-        heading = gyro.getHeading();
+       // heading = gyro.getHeading();
         switch(moveState){
             case MoveState.STOP:
                 // Halts all drivetrain movement of the robot
@@ -156,7 +157,7 @@ public abstract class AutonomousBase extends OpMode {
                     motorBackLeft.setPower(power);
                     motorBackRight.setPower(power);
                 }
-                servoLeftButton.setPosition(.5); // HACK
+                //servoLeftButton.setPosition(.5); // HACK
                 break;               
             case MoveState.LEFT:
                 // Moves the bot left at half speed
@@ -311,7 +312,7 @@ public abstract class AutonomousBase extends OpMode {
     }
 
     public void gameState(){
-        heading = gyro.getHeading();
+        //heading = gyro.getHeading();
 
         lDistF = cDistF;
         cDistF = ( motorBackLeft.getCurrentPosition()

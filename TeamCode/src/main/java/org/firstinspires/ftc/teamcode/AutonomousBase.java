@@ -1,20 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.I2cAddr;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-import java.util.Locale;
-
 /**
  * Created by minds on 1/23/2016.
  */
@@ -35,17 +27,19 @@ public abstract class AutonomousBase extends OpMode {
       public static final int LEFT = 3;
       public static final int RIGHT = 4;
       public static final int TURN_TOWARDS_GOAL = 5;
+      public static final int SERVO_R = 7;
+      public static final int SERVO_L = 8;
       public static final int BACKWARD_SLOW = 9;
+      public static final int SERVO_M = 10;
       public static final int FULL_STOP = 12;
       public static final int STRAFE_TOWARDS_GOAL = 15;
       public static final int TURN_TOWARDS_ANGLE = 16;
       public static final int LEFT_SLOW = 17;
       public static final int RIGHT_SLOW = 18;
       public static final int TURN_TOWARDS_ANGLE_SLOW= 19;
-      public static final int DEFINE_COLOR = 901937;
-
-
-
+      public static final int SERVO_DEPLOY = 20;
+      public static final int SERVO_C = 21;
+      public static final int SERVO_DEPLOY_STOP = 22;
     }
 
 
@@ -53,10 +47,16 @@ public abstract class AutonomousBase extends OpMode {
     DcMotor motorFrontLeft;
     DcMotor motorBackRight;
     DcMotor motorBackLeft;
+
     DcMotor motorConveyor;
     Servo servoCollector;
-    ColorSensor sensorColor;
-    DistanceSensor sensorDistance;
+    //Servo servoLeftButton;
+    Servo servoRightButton;
+    Servo servoBeaconDeploy;
+    //TouchSensor touchRight;
+    //TouchSensor touchWall;
+    ColorSensor colorLeft;
+    ColorSensor colorRight;
     GyroSensor gyro;
 
 
@@ -78,8 +78,6 @@ public abstract class AutonomousBase extends OpMode {
     int startPos = 6;
     Map map = new Map(startPos); //this map object will allow for easy manipulations.
 
-    final double SCALE_FACTOR = 255;
-    float hsvValues[] = {0F, 0F, 0F};
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -100,12 +98,21 @@ public abstract class AutonomousBase extends OpMode {
 
 
         servoCollector = hardwareMap.servo.get("collector");
+        //servoLeftButton = hardwareMap.servo.get("l_button");
+        servoRightButton = hardwareMap.servo.get("r_button");
+        servoBeaconDeploy = hardwareMap.servo.get("b_servo");
 
+        //touchRight = hardwareMap.touchSensor.get("right_touch");
+        //touchWall = hardwareMap.touchSensor.get("wall_touch");
 
         I2cAddr colorAddrLeft = I2cAddr.create8bit(0x3C);
         I2cAddr colorAddrRight = I2cAddr.create8bit(0x4C);
-        sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
-        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
+        colorLeft = hardwareMap.colorSensor.get("color_l");
+        colorRight = hardwareMap.colorSensor.get("color_r");
+        colorLeft.setI2cAddress(colorAddrLeft);
+        colorRight.setI2cAddress(colorAddrRight);
+        colorLeft.enableLed(false);
+        colorRight.enableLed(false);
 
         gyro = hardwareMap.gyroSensor.get("gyro");
         gyro.calibrate();
@@ -246,16 +253,7 @@ public abstract class AutonomousBase extends OpMode {
                     motorBackRight.setPower(-power);
                 }
                 break;
-            case MoveState.DEFINE_COLOR:
-                    Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
-                            (int) (sensorColor.green() * SCALE_FACTOR),
-                            (int) (sensorColor.blue() * SCALE_FACTOR),
-                            hsvValues);
-                }
-
-
-                break;
-            /*case MoveState.TURN_TOWARDS_ANGLE_SLOW:
+            case MoveState.TURN_TOWARDS_ANGLE_SLOW:
                 // Orients the bot to face at desiredAngle.
                 power = .2;
                 if(heading<=180){
@@ -275,12 +273,31 @@ public abstract class AutonomousBase extends OpMode {
                     motorBackLeft.setPower(power);
                     motorBackRight.setPower(-power);
                 }
-                break;*/
-
-
+                break;
+            case MoveState.SERVO_R:
+                // Hits right button with wumbo
+                servoRightButton.setPosition(1);
+                break;
+            case MoveState.SERVO_L:
+                // Hits left button with wumbo
+                servoRightButton.setPosition(0);
+                break;
+            case MoveState.SERVO_DEPLOY:
+                servoBeaconDeploy.setPosition(1);
+                break;
+            case MoveState.SERVO_DEPLOY_STOP:
+                servoBeaconDeploy.setPosition(.5);
+                break;
+             case MoveState.SERVO_M:
+                // Retracts wumbo
+                servoRightButton.setPosition(.5);
+                break;
+            case MoveState.SERVO_C:
+                 servoCollector.setPosition(1);
+                 break;
             case MoveState.FULL_STOP:
                 // Stop ALL robot movement, and resets servo to default pos
-
+                servoRightButton.setPosition(.5);
                 servoCollector.setPosition(.5);
                 motorFrontRight.setPower(0);
                 motorFrontLeft.setPower(0);
@@ -317,7 +334,8 @@ public abstract class AutonomousBase extends OpMode {
     public void telemetry(){
         telemetry.addData("angle to goal ",map.angleToGoal());
         telemetry.addData("Runtime ",getRuntime());
-
+        telemetry.addData("colorLeft ","Left R: " + colorLeft.red() + " G: " + colorLeft.green() + " B: " + colorLeft.blue() + " A: " + colorLeft.alpha() + " RGBA: " + colorLeft.argb());
+        telemetry.addData("colorRight ","Right R: " + colorRight.red() + " G: " + colorRight.green() + " B: " + colorRight.blue() + " A: " + colorRight.alpha() + " RGBA: " + colorRight.argb());
         telemetry.addData("dist from goal ",map.distanceToGoal());
         telemetry.addData("goal (x,y) ","(" +
           map.getGoalX() + "," + 
@@ -330,7 +348,7 @@ public abstract class AutonomousBase extends OpMode {
         telemetry.addData("Desired Angle", desiredAngle);
         telemetry.addData("moveState", moveState);
         telemetry.addData("gameState", gameState);
-
+        telemetry.addData("wumbo pos", servoRightButton.getPosition());
     }
 
     @Override

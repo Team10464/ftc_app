@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,9 +19,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 /**
  * Created by Team 10464 on 9/21/16.
  */
-@TeleOp(name = "Sensor: MR Gyro", group = "Sensor")
-@Disabled
-class OreantedTeleop extends LinearOpMode
+@TeleOp(name = "Oriented Protobot", group = "Protobot")
+
+class OrientedTeleop extends LinearOpMode
 {
 
     /**
@@ -57,7 +56,6 @@ class OreantedTeleop extends LinearOpMode
         // during the initialization phase at the start of each opMode.
         telemetry.log().add("Gyro Calibrating. Do Not Move!");
         modernRoboticsI2cGyro.calibrate();
-
         // Wait until the gyro calibration is complete
         timer.reset();
         while (!isStopRequested() && modernRoboticsI2cGyro.isCalibrating()) {
@@ -128,6 +126,7 @@ class OreantedTeleop extends LinearOpMode
 
             // Drivetrain controls
             if (gamepad1.left_trigger > .1 || gamepad1.right_trigger > .1) {
+
                 double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
                 double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
                 double rightX = gamepad1.left_stick_x;
@@ -140,8 +139,14 @@ class OreantedTeleop extends LinearOpMode
                 motorFrontLeft.setPower(v2);
                 motorBackRight.setPower(v3);
                 motorBackLeft.setPower(v4);
+            }
+
+            if (gamepad1.left_stick_button)
+            {
+                modernRoboticsI2cGyro.calibrate();
 
             }
+
 
         }
     }

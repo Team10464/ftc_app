@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gyroscope;
@@ -51,10 +50,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
 */
-@TeleOp(name = "Sensor: MR Gyro", group = "Sensor")
-@Disabled
-public class SensorMRGyro extends LinearOpMode {
+@TeleOp(name = "Sensor: MR Gyro", group = "ProtoBot")
 
+public class SensorMRGyro extends LinearOpMode {
   /** In this sample, for illustration purposes we use two interfaces on the one gyro object.
    * That's likely atypical: you'll probably use one or the other in any given situation,
    * depending on what you're trying to do. {@link IntegratingGyroscope} (and it's base interface,

@@ -33,8 +33,6 @@ public class MechanumProtoBot extends OpMode
         motorFrontLeft= hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backLeft");
         motorBackLeft = hardwareMap.dcMotor.get("backRight");
-        conveyorHorz = hardwareMap.dcMotor.get("conveyorHortz");
-        conveyorVert = hardwareMap.dcMotor.get("conveyorVert");
 
 
     }
@@ -55,22 +53,6 @@ public class MechanumProtoBot extends OpMode
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
 
-
-        if (gamepad2.x){
-            conveyorHorz.setPower(1);
-        }else if (gamepad2.a){
-            conveyorHorz.setPower(-1);
-        }else{
-            conveyorHorz.setPower(0);
-        }
-
-        if (gamepad2.y){
-            conveyorVert.setPower(1);
-        }else if (gamepad2.b){
-            conveyorVert.setPower(-1);
-        }else{
-            conveyorVert.setPower(0);
-        }
     }
 
 }

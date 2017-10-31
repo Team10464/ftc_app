@@ -4,7 +4,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Func;
@@ -19,9 +19,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import java.util.Locale;
 
 
-@Autonomous(name="TestGyroTurn12_29", group="Pushbot")
+@Autonomous(name="AutonomousMeukurie", group="ProtoBot")
 //@Disabled
-public abstract class TestGyroTurn12_29 implements TeleOp {
+public abstract class AutonomousMeurkurie extends OpMode {
     BNO055IMU imu;
     Orientation angles;
     Acceleration gravity;
@@ -32,39 +32,44 @@ public abstract class TestGyroTurn12_29 implements TeleOp {
     private DcMotor motorBackLeft;
 
 
-    public void runOpMode() {
-        motorFrontLeft = hardwareMap.dcMotor.get("dltM");
-        motorBackLeft = hardwareMap.dcMotor.get("dlbM");
-        motorFrontRight = hardwareMap.dcMotor.get("drtM");
-        motorBackRight = hardwareMap.dcMotor.get("drbM");
+    public void init() {
+
+        motorFrontRight = hardwareMap.dcMotor.get("frontRight");
+        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
+        motorBackRight = hardwareMap.dcMotor.get("backLeft");
+        motorBackLeft = hardwareMap.dcMotor.get("backRight");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.calibrationDataFile = "AdafruitIMUCalibration.json"; // see the calibration sample opmode
+        parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-//Send telemetry message to signify robot waiting
-        telemetry.addData("Status", "Resetting Encoders");
-        telemetry.update();
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameters);
-        composeIMUTelemetry(); //set up telemetry for gyro
-//All code above is begun upon init; all code below is begun upon start
-        waitForStart();
+
+
+                imu.initialize(parameters);
+    }
+
+
+
+
+
+    public void runOpMode()
+    {
+
+        //waitForStart();
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
         while (Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)) < 90) { //imu.getAngularOrientation().firstAngle
-            leftTopMotor.setPower(0.6);
-            imu.setPower(0.6);
-            rightTopMotor.setPower(-0.6);
-            rightBottomMotor.setPower(-0.6);
+            motorFrontLeft.setPower(0.6);
+            motorBackLeft.setPower(0.6);
+            motorFrontRight.setPower(-0.6);
+            motorBackRight.setPower(-0.6);
         }
-        stopDrive();
-        while(opModeIsActive()) {
+
             telemetry.update();
         }
-    }
 
     public void composeIMUTelemetry() {
 

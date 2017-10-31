@@ -48,8 +48,7 @@ public abstract class AutonomousMeurkurie extends OpMode {
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu = hardwareMap.get(BNO055IMU.class, "imu");
 
-
-                imu.initialize(parameters);
+        imu.initialize(parameters);
     }
 
 
@@ -61,7 +60,8 @@ public abstract class AutonomousMeurkurie extends OpMode {
 
         //waitForStart();
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-        while (Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)) < 90) { //imu.getAngularOrientation().firstAngle
+        while (Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)) < 90) {
+            imu.getAngularOrientation().firstAngle
             motorFrontLeft.setPower(0.6);
             motorBackLeft.setPower(0.6);
             motorFrontRight.setPower(-0.6);
@@ -90,7 +90,7 @@ public abstract class AutonomousMeurkurie extends OpMode {
                         return imu.getSystemStatus().toShortString();
                     }
                 })
-                .addData("calib", new Func<String>() {
+        telemetry.addData("calib", new Func<String>() {
                     @Override public String value() {
                         return imu.getCalibrationStatus().toString();
                     }
@@ -106,7 +106,7 @@ public abstract class AutonomousMeurkurie extends OpMode {
 
 
     String formatAngle(AngleUnit angleUnit, double angle) {
-        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit , angle));
+        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
     String formatDegrees(double degrees){

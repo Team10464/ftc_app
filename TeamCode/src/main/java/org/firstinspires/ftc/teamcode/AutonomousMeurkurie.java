@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Func;
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -16,15 +15,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
-import java.util.
+import java.util.Locale;
 
-public void init()
-@Autonomous(name="AutonomousMeukurie", group="ProtoBot");
-//@Disabled
+
+@Autonomous(name="AutonomousMeukurie", group="ProtoBot")
+
 public abstract class AutonomousMeurkurie extends OpMode {
+
+
     BNO055IMU imu;
     Orientation angles;
-    Acceleration gravity;
 
     private DcMotor motorFrontRight;
     private DcMotor motorBackRight;
@@ -60,8 +60,8 @@ public abstract class AutonomousMeurkurie extends OpMode {
 
         //waitForStart();
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-        while (Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)) < 90) {
-            imu.getAngularOrientation().firstAngle
+        while (Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle)) < 90)
+        {
             motorFrontLeft.setPower(0.6);
             motorBackLeft.setPower(0.6);
             motorFrontRight.setPower(-0.6);
@@ -89,7 +89,7 @@ public abstract class AutonomousMeurkurie extends OpMode {
                     @Override public String value() {
                         return imu.getSystemStatus().toShortString();
                     }
-                })
+                });
         telemetry.addData("calib", new Func<String>() {
                     @Override public String value() {
                         return imu.getCalibrationStatus().toString();

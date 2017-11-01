@@ -18,8 +18,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 
 import java.util.
 
-
-@Autonomous(name="AutonomousMeukurie", group="ProtoBot")
+public void init()
+@Autonomous(name="AutonomousMeukurie", group="ProtoBot");
 //@Disabled
 public abstract class AutonomousMeurkurie extends OpMode {
     BNO055IMU imu;

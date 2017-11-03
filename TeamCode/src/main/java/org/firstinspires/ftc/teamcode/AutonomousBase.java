@@ -3,47 +3,41 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.I2cAddr;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-import java.util.Locale;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by minds on 1/23/2016.
  */
 public abstract class AutonomousBase extends OpMode {
     public final double HEADING_TOLERANCE = 7; //tolerance for heading calculations
-    public final double DISTANCE_TOLERANCE = 1.0/12; //tolerance for heading calculations
-    public final double DEGREES_TO_FEET = 3.96*Math.PI/1120/12;
+    public final double DISTANCE_TOLERANCE = 1.0 / 12; //tolerance for heading calculations
+    public final double DEGREES_TO_FEET = 3.96 * Math.PI / 1120 / 12;
     //EXPLAINATION:
     // (wheel diameter) * pi / (encoder ticks per rotation) /(inches in a foot)
     // This converts encoder ticks into feet.
     //**WARNING** Always calculate distance CHANGED, since encoders have no
     // concept of direction, and we are moving across a 2D plane.
 
-    public static class MoveState{
-      public static final int STOP = 0;
-      public static final int FORWARD = 1;
-      public static final int BACKWARD = 2;
-      public static final int LEFT = 3;
-      public static final int RIGHT = 4;
-      public static final int TURN_TOWARDS_GOAL = 5;
-      public static final int BACKWARD_SLOW = 9;
-      public static final int FULL_STOP = 12;
-      public static final int STRAFE_TOWARDS_GOAL = 15;
-      public static final int TURN_TOWARDS_ANGLE = 16;
-      public static final int LEFT_SLOW = 17;
-      public static final int RIGHT_SLOW = 18;
-      public static final int TURN_TOWARDS_ANGLE_SLOW= 19;
-      public static final int DEFINE_COLOR = 901937;
-
+    public static class MoveState {
+        public static final int STOP = 0;
+        public static final int FORWARD = 1;
+        public static final int BACKWARD = 2;
+        public static final int LEFT = 3;
+        public static final int RIGHT = 4;
+        public static final int TURN_TOWARDS_GOAL = 5;
+        public static final int BACKWARD_SLOW = 9;
+        public static final int FULL_STOP = 12;
+        public static final int STRAFE_TOWARDS_GOAL = 15;
+        public static final int TURN_TOWARDS_ANGLE = 16;
+        public static final int LEFT_SLOW = 17;
+        public static final int RIGHT_SLOW = 18;
+        public static final int TURN_TOWARDS_ANGLE_SLOW = 19;
+        public static final int DEFINE_COLOR = 901937;
 
 
     }
@@ -54,7 +48,7 @@ public abstract class AutonomousBase extends OpMode {
     DcMotor motorBackRight;
     DcMotor motorBackLeft;
     DcMotor motorConveyor;
-    Servo servoCollector;
+    Servo servo;
     ColorSensor sensorColor;
     DistanceSensor sensorDistance;
     GyroSensor gyro;
@@ -83,15 +77,15 @@ public abstract class AutonomousBase extends OpMode {
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
-        motorFrontLeft= hardwareMap.dcMotor.get("frontLeft");
+        motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backRight");
         motorBackLeft = hardwareMap.dcMotor.get("backLeft");
-        
+
         motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        
+
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
 
@@ -99,7 +93,7 @@ public abstract class AutonomousBase extends OpMode {
         motorConveyor = hardwareMap.dcMotor.get("conveyor");
 
 
-        servoCollector = hardwareMap.servo.get("collector");
+        servo = hardwareMap.servo.get("collector");
 
 
         I2cAddr colorAddrLeft = I2cAddr.create8bit(0x3C);
@@ -111,9 +105,9 @@ public abstract class AutonomousBase extends OpMode {
         gyro.calibrate();
     }
 
-    public void moveState(){
-       // heading = gyro.getHeading();
-        switch(moveState){
+    public void moveState() {
+        // heading = gyro.getHeading();
+        switch (moveState) {
             case MoveState.STOP:
                 // Halts all drivetrain movement of the robot
                 motorFrontRight.setPower(0);
@@ -124,7 +118,7 @@ public abstract class AutonomousBase extends OpMode {
             case MoveState.FORWARD:
                 // Moves the bot forward at half speed
                 power = 1; //power coefficient
-                if(map.distanceToGoal()>DISTANCE_TOLERANCE) {
+                if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     motorFrontRight.setPower(power);
                     motorFrontLeft.setPower(power);
                     motorBackLeft.setPower(power);
@@ -134,7 +128,7 @@ public abstract class AutonomousBase extends OpMode {
             case MoveState.BACKWARD:
                 // Moves the bot backwards at half speed
                 power = -1; //power coefficient
-                if(map.distanceToGoal()>DISTANCE_TOLERANCE) {
+                if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     motorFrontRight.setPower(power);
                     motorFrontLeft.setPower(power);
                     motorBackLeft.setPower(power);
@@ -144,18 +138,18 @@ public abstract class AutonomousBase extends OpMode {
             case MoveState.BACKWARD_SLOW:
                 // Moves the bot backwards at minimum speed
                 power = -.2; //power coefficient
-                if(map.distanceToGoal()>DISTANCE_TOLERANCE) {
+                if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     motorFrontRight.setPower(power);
                     motorFrontLeft.setPower(power);
                     motorBackLeft.setPower(power);
                     motorBackRight.setPower(power);
                 }
                 //servoLeftButton.setPosition(.5); // HACK
-                break;               
+                break;
             case MoveState.LEFT:
                 // Moves the bot left at half speed
                 power = -1; //power coefficient
-                if(map.distanceToGoal()>DISTANCE_TOLERANCE) {
+                if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     motorFrontRight.setPower(-power);
                     motorFrontLeft.setPower(power);
                     motorBackLeft.setPower(power);
@@ -165,7 +159,7 @@ public abstract class AutonomousBase extends OpMode {
             case MoveState.LEFT_SLOW:
                 // Moves the bot left at half speed
                 power = -.5; //power coefficient
-                if(map.distanceToGoal()>DISTANCE_TOLERANCE) {
+                if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     motorFrontRight.setPower(-power);
                     motorFrontLeft.setPower(power);
                     motorBackLeft.setPower(power);
@@ -175,7 +169,7 @@ public abstract class AutonomousBase extends OpMode {
             case MoveState.RIGHT:
                 // Moves the bot right at half speed
                 power = 1; //power coefficient
-                if(map.distanceToGoal()>DISTANCE_TOLERANCE) {
+                if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     motorFrontRight.setPower(power);
                     motorFrontLeft.setPower(-power);
                     motorBackLeft.setPower(-power);
@@ -185,7 +179,7 @@ public abstract class AutonomousBase extends OpMode {
             case MoveState.RIGHT_SLOW:
                 // Moves the bot right at half speed
                 power = .5; //power coefficient
-                if(map.distanceToGoal()>DISTANCE_TOLERANCE) {
+                if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     motorFrontRight.setPower(power);
                     motorFrontLeft.setPower(-power);
                     motorBackLeft.setPower(-power);
@@ -206,18 +200,18 @@ public abstract class AutonomousBase extends OpMode {
             case MoveState.TURN_TOWARDS_GOAL:
                 // Orients the bot to face the goal
                 power = .25;
-                if(heading<=180){
+                if (heading <= 180) {
                     turnRight = heading <= map.angleToGoal() && heading + 180 >= map.angleToGoal();
-                }else{
+                } else {
                     turnRight = !(heading >= map.angleToGoal() && heading - 180 <= map.angleToGoal());
                 }
 
-                if(turnRight){
+                if (turnRight) {
                     motorFrontRight.setPower(power);
                     motorFrontLeft.setPower(-power);
                     motorBackLeft.setPower(-power);
                     motorBackRight.setPower(power);
-                }else{
+                } else {
                     motorFrontRight.setPower(-power);
                     motorFrontLeft.setPower(power);
                     motorBackLeft.setPower(power);
@@ -228,18 +222,18 @@ public abstract class AutonomousBase extends OpMode {
             case MoveState.TURN_TOWARDS_ANGLE:
                 // Orients the bot to face at desiredAngle.
                 power = .3;
-                if(heading<=180){
+                if (heading <= 180) {
                     turnRight = heading <= desiredAngle && heading + 180 >= desiredAngle;
-                }else{
+                } else {
                     turnRight = !(heading >= desiredAngle && heading - 180 <= desiredAngle);
                 }
 
-                if(turnRight){
+                if (turnRight) {
                     motorFrontRight.setPower(power);
                     motorFrontLeft.setPower(-power);
                     motorBackLeft.setPower(power);
                     motorBackRight.setPower(-power);
-                }else{
+                } else {
                     motorFrontRight.setPower(-power);
                     motorFrontLeft.setPower(power);
                     motorBackLeft.setPower(power);
@@ -247,14 +241,14 @@ public abstract class AutonomousBase extends OpMode {
                 }
                 break;
             case MoveState.DEFINE_COLOR:
-                    Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
-                            (int) (sensorColor.green() * SCALE_FACTOR),
-                            (int) (sensorColor.blue() * SCALE_FACTOR),
-                            hsvValues);
-                }
+                Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
+                        (int) (sensorColor.green() * SCALE_FACTOR),
+                        (int) (sensorColor.blue() * SCALE_FACTOR),
+                        hsvValues);
+        }
 
 
-                break;
+        //break;
             /*case MoveState.TURN_TOWARDS_ANGLE_SLOW:
                 // Orients the bot to face at desiredAngle.
                 power = .2;
@@ -278,21 +272,21 @@ public abstract class AutonomousBase extends OpMode {
                 break;*/
 
 
-            case MoveState.FULL_STOP:
-                // Stop ALL robot movement, and resets servo to default pos
+       // case MoveState.FULL_STOP:
+        // Stop ALL robot movement, and resets servo to default pos
 
-                servoCollector.setPosition(.5);
-                motorFrontRight.setPower(0);
-                motorFrontLeft.setPower(0);
-                motorBackLeft.setPower(0);
-                motorBackRight.setPower(0);
-                motorConveyor.setPower(0);
-                break;
+        servo.setPosition(.5);
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackLeft.setPower(0);
+        motorBackRight.setPower(0);
+        motorConveyor.setPower(0);
+       // break;
 
-        }
-        map.moveRobot(dDistS * DEGREES_TO_FEET, (heading+90%360));
-        map.moveRobot(dDistF * DEGREES_TO_FEET, heading);
     }
+    //  map.moveRobot(dDistS * DEGREES_TO_FEET, (heading+90%360));
+    // map.moveRobot(dDistF * DEGREES_TO_FEET, heading);
+//}
 
     public void gameState(){
         //heading = gyro.getHeading();

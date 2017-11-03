@@ -11,8 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 /**
- - * Created by jonathonmangan on 10/1/17.
- + * Created by emilydkiehl on 10/1/17.
+ * Created by emilydkiehl on 10/1/17.
  */
 @TeleOp(name="Oriented Protobot Tank", group="Protobot")
 public class OrientedProtoBot extends OpMode

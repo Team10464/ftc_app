@@ -59,6 +59,17 @@ public class OrientedProtoBot extends OpMode {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
 
+        if (gamepad2.left_bumper)
+        {
+            mobert.setPosition(0);
+            franny.setPosition(1);
+
+        } else if (gamepad2.right_bumper)
+        {
+            mobert.setPosition(1);
+            franny.setPosition(0);
+        }
+
 
         if (gamepad1.left_stick_button) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
@@ -72,19 +83,6 @@ public class OrientedProtoBot extends OpMode {
             motorFrontLeft.setPower(v6);
             motorBackRight.setPower(v7);
             motorBackLeft.setPower(v8);
-
-        }
-
-
-        if (gamepad2.left_bumper) {
-            mobert.setPosition(0);
-            franny.setPosition(1);
-
-        } else if (gamepad2.right_bumper) {
-            mobert.setPosition(1);
-            franny.setPosition(0);
-        } else
-        {
 
         }
     }

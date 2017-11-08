@@ -24,10 +24,10 @@ public class OrientedProtoBot extends OpMode {
     private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
     private DcMotor motorBackRight;
-    private DcMotor conveyorHorz;
-    private DcMotor conveyorVert;
-    private Servo franny;
-    private Servo mobert;
+    private DcMotor top;
+    private DcMotor front;
+    private Servo franny = null;
+    private Servo mobert = null;
 
     private BNO055IMU imu;
 
@@ -38,8 +38,8 @@ public class OrientedProtoBot extends OpMode {
         motorBackLeft = hardwareMap.dcMotor.get("backRight");
         franny = hardwareMap.servo.get("franny");
         mobert = hardwareMap.servo.get("mobert");
-        //  conveyorHorz = hardwareMap.dcMotor.get("conveyorHortz");
-        //  conveyorVert = hardwareMap.dcMotor.get("conveyorVert");
+        top = hardwareMap.dcMotor.get("top");
+        front = hardwareMap.dcMotor.get("front");
 
 
         BNO055IMU imu;
@@ -59,15 +59,19 @@ public class OrientedProtoBot extends OpMode {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
 
-        if (gamepad2.left_bumper)
-        {
-            mobert.setPosition(0);
-            franny.setPosition(1);
-
-        } else if (gamepad2.right_bumper)
-        {
-            mobert.setPosition(1);
-            franny.setPosition(0);
+        if (gamepad2.b) {
+            mobert.setPosition(.998);
+            franny.setPosition(.002);
+        } else if (gamepad2.a) {
+            mobert.setPosition(.45);
+            franny.setPosition(.78);
+        }else if (gamepad2.y) {
+            mobert.setPosition(.6);
+            franny.setPosition(.6);
+        } else if (gamepad2.x) {
+            mobert.setPosition(.002);
+            franny.setPosition(.998);
+        } else {
         }
 
 
@@ -83,35 +87,29 @@ public class OrientedProtoBot extends OpMode {
             motorFrontLeft.setPower(v6);
             motorBackRight.setPower(v7);
             motorBackLeft.setPower(v8);
+        }
+           // top.setPower(gamepad2.right_stick_x * .5);
+           // front.setPower(gamepad2.left_stick_x * .5);
 
+            if (gamepad2.dpad_right) {
+                top.setPower(-0.45);
+            } else if (gamepad2.dpad_left) {
+                top.setPower(0.45);
+            } else {
+                top.setPower(0);
+            }
+
+            if (gamepad2.dpad_up) {
+                front.setPower(-0.7);
+            } else if (gamepad2.dpad_down) {
+                front.setPower(0.7);
+            } else {
+                front.setPower(0);
+            }
         }
     }
-}
-//
 
-//        if (gamepad2.x){
-//            conveyorHorz.setPower(1);
-//            }
-//            else if (gamepad2.a)
-//            {
-//            conveyorHorz.setPower(-1);
-//            }
-//            else
-//            {
-//            conveyorHorz.setPower(0);
-//            }
 
-//        if (gamepad2.y)
-//        {
-//            conveyorVert.setPower(1);
-//            }
-//            else if (gamepad2.b)
-//            {
-//            conveyorVert.setPower(-1);
-//            }
-//            else
-//            {
-//            conveyorVert.setPower(0);
-//            }
-//        }
-//    }
+
+
+

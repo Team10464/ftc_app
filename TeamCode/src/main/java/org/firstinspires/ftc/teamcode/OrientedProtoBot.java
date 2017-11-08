@@ -28,6 +28,8 @@ public class OrientedProtoBot extends OpMode {
     private DcMotor front;
     private Servo franny = null;
     private Servo mobert = null;
+    private double left;
+    private double right;
 
     private BNO055IMU imu;
 
@@ -40,6 +42,8 @@ public class OrientedProtoBot extends OpMode {
         mobert = hardwareMap.servo.get("mobert");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
+        left = 0.0;
+        right = 1.0;
 
 
         BNO055IMU imu;
@@ -59,20 +63,32 @@ public class OrientedProtoBot extends OpMode {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
 
-        if (gamepad2.b) {
-            mobert.setPosition(.998);
-            franny.setPosition(.002);
-        } else if (gamepad2.a) {
-            mobert.setPosition(.45);
-            franny.setPosition(.78);
-        }else if (gamepad2.y) {
-            mobert.setPosition(.6);
-            franny.setPosition(.6);
-        } else if (gamepad2.x) {
-            mobert.setPosition(.002);
-            franny.setPosition(.998);
-        } else {
+        if (gamepad2.left_bumper) {
+            if(left < 1.0){
+                left += .01;
+            }
+            franny.setPosition(left);
+        }else if (gamepad2.left_trigger > .7) {
+            if(left > 0.0){
+                left -= .01;
+            }
+            franny.setPosition(left);
+        }else{
         }
+        if (gamepad2.right_bumper) {
+            if(right > 0){
+                right -= .01;
+            }
+            mobert.setPosition(right);
+        }else if (gamepad2.right_trigger > .7) {
+            if(right < 1){
+                right += .01;
+            }
+            mobert.setPosition(right);
+        }else {
+        }
+        telemetry.addData("Left", left);
+        telemetry.addData("Right", right);
 
 
         if (gamepad1.left_stick_button) {
@@ -91,18 +107,18 @@ public class OrientedProtoBot extends OpMode {
            // top.setPower(gamepad2.right_stick_x * .5);
            // front.setPower(gamepad2.left_stick_x * .5);
 
-            if (gamepad2.dpad_right) {
+            if (gamepad2.dpad_up) {
                 top.setPower(-0.45);
-            } else if (gamepad2.dpad_left) {
+            } else if (gamepad2.dpad_down) {
                 top.setPower(0.45);
             } else {
                 top.setPower(0);
             }
 
-            if (gamepad2.dpad_up) {
+            if (gamepad2.y) {
                 front.setPower(-0.7);
-            } else if (gamepad2.dpad_down) {
-                front.setPower(0.7);
+            } else if (gamepad2.a) {
+                front.setPower(0.35);
             } else {
                 front.setPower(0);
             }

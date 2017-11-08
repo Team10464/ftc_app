@@ -24,21 +24,18 @@ import static com.sun.tools.javac.util.Constants.format;
  * Created by emilydkiehl on 11/1/17
  */
 
-
-
-
 @Autonomous(name="RedFront", group="Red")
-public class RedFront extends AutonomousBase {
+class RedFront extends AutonomousBase {
 
-
+    double xTime;
+    int i;
+    private OpenGLMatrix lastLocation;
     private DcMotor motorFrontRight;
-    private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
-    private DcMotor motorBackRight;
     private DcMotor top;
     private DcMotor front;
-
     private Servo servo;
+    private VuforiaLocalizer vuforia;
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
@@ -47,15 +44,7 @@ public class RedFront extends AutonomousBase {
         motorBackLeft = hardwareMap.dcMotor.get("backRight");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
-        servo = hardwareMap.servo.get("servo");
-    }
-
-
-    double xTime;
-    int i;
-    VuforiaLocalizer vuforia;
-    OpenGLMatrix lastLocation;
-
+        servo = hardwareMap.servo.get("servo");    }
 
     public void gameState() {
         super.gameState();
@@ -65,40 +54,36 @@ public class RedFront extends AutonomousBase {
                     gameState = 1;
                     sTime = getRuntime();
                     map.setRobot(10, 2);
-                    servo.setPosition(.675);
-                }
+                    servo.setPosition(.675);    }
                 break;
+
             case 1:
                 sensorColor = hardwareMap.colorSensor.get("color");
                 if (sensorColor.red() > sensorColor.blue()) {
                     motorBackLeft.setTargetPosition(2);
                     motorBackLeft.setPower(.6);
                     motorFrontRight.setTargetPosition(2);
-                    motorFrontRight.setPower(-.6);
-                }
+                    motorFrontRight.setPower(-.6);  }
 
                 if (sensorColor.red() < sensorColor.blue()) {
                     motorBackLeft.setTargetPosition(2);
                     motorBackLeft.setPower(-.6);
                     motorFrontRight.setTargetPosition(2);
-                    motorFrontRight.setPower(.6);
-                }
+                    motorFrontRight.setPower(.6);   }
 
                 gameState = 3;
                 break;
+
             case 3: //Read cryptograph thingy
 
                 int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-                //VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId
 
+                //VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId
                 // OR...  Do Not Activate the Camera Monitor View, to save power
+
                 VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
                 parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
-
-
                 parameters.vuforiaLicenseKey = "AXNl2OH/////AAAAGflnH9+TB0cjkiKrzrC40+hq56YtjwvBhyRcjrjKaCjm/UzvB4u1IBT/k5RKhsiiJwoIM4OlMjVVz/xrXIjupQWV7AmH0iUw7iwiE01IwTH1w8xbxgdS/dzzISlVAnAfzqDaAnskEyajrlWhM2OZTuxJ/FeWTIz69IFgk2ArC0ZlbbaUF8g0tbLwvNRjewbIebp81rksnL1KL2s/f8eiq9nb1P6KHMdjGXz7Q2opydkT74X7SJO4GSVmBVrDOumW9DXdOuk82JRPf8HjVjToTQu/zwPLjMr5izEmcs58bb5x2UiPFqzCsmrF65SYCQTShUizvlFKQfdMeu90OPRA0VswWUkvW6Y4OZu35P2+vdUV";
-
-
                 parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
                 this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
 
@@ -108,6 +93,7 @@ public class RedFront extends AutonomousBase {
                  * but differ in their instance id information.
                  * @see VuMarkInstanceId
                  */
+
                 VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
                 VuforiaTrackable relicTemplate = relicTrackables.get(0);
                 relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
@@ -115,12 +101,10 @@ public class RedFront extends AutonomousBase {
                 telemetry.addData(">", "Press Play to start");
                 telemetry.update();
 
-
                 relicTrackables.activate();
 
-                while (1 == 1) {
+                while (true) {
                     RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
-
 
                     /**
                      * See if any of the instances of {@link relicTemplate} are currently visible.
@@ -131,18 +115,14 @@ public class RedFront extends AutonomousBase {
                      */
 
                     if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+                        telemetry.addData("VuMark", "%s visible", vuMark);  }
 
-                        telemetry.addData("VuMark", "%s visible", vuMark);
-
-                    }
                 /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
                  * it is perhaps unlikely that you will actually need to act on this pose information, but
                  * we illustrate it nevertheless, for completeness. */
                     OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
                     telemetry.addData("Pose", format(pose));
-                    telemetry.addData("VuMark", "not visible");
-                }
-        }
+                    telemetry.addData("VuMark", "not visible"); }   }
 
         telemetry.update();
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
@@ -154,43 +134,22 @@ public class RedFront extends AutonomousBase {
             moveState = MoveState.STRAFE_TOWARDS_GOAL;
             top.setTargetPosition(2);
             front.setTargetPosition(2);
-            if (motorBackLeft.setPower(0) && motorFrontRight.setPower(0)) {
+            if (motorBackLeft(0) && motorFrontRight(0)) {
                 front.setPower(2);
-                top.setTargetPosition(2);
-            }
-            else if (vuMark == RelicRecoveryVuMark.LEFT) {
-                map.setGoal(11, 5.647);
-                moveState = MoveState.STRAFE_TOWARDS_GOAL;
-                front.setTargetPosition(2);
-                top.setTargetPosition(2);
-                if (motorBackLeft.setPower(0) && motorFrontRight(0)) {
-                    front.setPower(2);
-                    top.setTargetPosition(2);
-                }
-
-
-            else if (vuMark == RelicRecoveryVuMark.RIGHT) {
-                map.setGoal(11, 4.397);
-                moveState = MoveState.STRAFE_TOWARDS_GOAL;
-                if (motorBackLeft.setPower(0) && motorFrontRight.setPower(0)) {
-                    front.setPower(2);
-                    top.setTargetPosition(2);
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
+                top.setTargetPosition(2);   }
+        else if (vuMark == RelicRecoveryVuMark.LEFT) {
+            map.setGoal(11, 5.647);
+            moveState = MoveState.STRAFE_TOWARDS_GOAL;
+            top.setTargetPosition(2);
+            front.setTargetPosition(2);
+            if (motorBackLeft(0) && motorFrontRight(0)) {
+                front.setPower(2);
+                top.setTargetPosition(2);   }
+        else if (vuMark == RelicRecoveryVuMark.RIGHT) {
+            map.setGoal(11, 4.397);
+            moveState = MoveState.STRAFE_TOWARDS_GOAL;
+            front.setPower(2);
+            top.setTargetPosition(2);   }
+            if (motorBackLeft(0) && motorFrontRight(0)) {
+                front.setPower(2);
+                top.setTargetPosition(2);   }   }   }   }   }

@@ -63,6 +63,23 @@ public class OrientedProtoBot extends OpMode {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
 
+        if (gamepad2.b) {
+            if(left < 1.0 && right > 0.0){
+                left += .01;
+                right -= .01;
+            }
+            franny.setPosition(left);
+            mobert.setPosition(right);
+        }else if (gamepad2.x) {
+            if(left > 0.0 && right < 1.0){
+                left -= .01;
+                right += .01;
+            }
+            franny.setPosition(left);
+            mobert.setPosition(right);
+        }else{
+        }
+
         if (gamepad2.left_bumper) {
             if(left < 1.0){
                 left += .01;

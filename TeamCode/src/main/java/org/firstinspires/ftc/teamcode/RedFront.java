@@ -35,8 +35,8 @@ public class RedFront extends AutonomousBase {
     private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
     private DcMotor motorBackRight;
-    private DcMotor conveyorHorz;
-    private DcMotor conveyorVert;
+    private DcMotor top;
+    private DcMotor front;
 
     private Servo servo;
 
@@ -45,8 +45,8 @@ public class RedFront extends AutonomousBase {
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backLeft");
         motorBackLeft = hardwareMap.dcMotor.get("backRight");
-        conveyorHorz = hardwareMap.dcMotor.get("conveyorHortz");
-        conveyorVert = hardwareMap.dcMotor.get("conveyorVert");
+        top = hardwareMap.dcMotor.get("top");
+        front = hardwareMap.dcMotor.get("front");
         servo = hardwareMap.servo.get("servo");
     }
 
@@ -65,22 +65,24 @@ public class RedFront extends AutonomousBase {
                     gameState = 1;
                     sTime = getRuntime();
                     map.setRobot(10, 2);
-                    servo.setPosition(1);
+                    servo.setPosition(.675);
                 }
                 break;
             case 1:
                 sensorColor = hardwareMap.colorSensor.get("color");
-                if (sensorColor.red() > sensorColor.blue())
+                if (sensorColor.red() > sensorColor.blue()) {
                     motorBackLeft.setTargetPosition(2);
-                motorBackLeft.setPower(.6);
-                motorFrontRight.setTargetPosition(2);
-                motorFrontRight.setPower(-.6);
+                    motorBackLeft.setPower(.6);
+                    motorFrontRight.setTargetPosition(2);
+                    motorFrontRight.setPower(-.6);
+                }
 
-                if (sensorColor.red() < sensorColor.blue())
+                if (sensorColor.red() < sensorColor.blue()) {
                     motorBackLeft.setTargetPosition(2);
-                motorBackLeft.setPower(-.6);
-                motorFrontRight.setTargetPosition(2);
-                motorFrontRight.setPower(.6);
+                    motorBackLeft.setPower(-.6);
+                    motorFrontRight.setTargetPosition(2);
+                    motorFrontRight.setPower(.6);
+                }
 
                 gameState = 3;
                 break;
@@ -131,7 +133,7 @@ public class RedFront extends AutonomousBase {
                     if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
                         telemetry.addData("VuMark", "%s visible", vuMark);
-                        telemetry.addData("null?", 1);
+
                     }
                 /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
                  * it is perhaps unlikely that you will actually need to act on this pose information, but
@@ -150,25 +152,37 @@ public class RedFront extends AutonomousBase {
         if (vuMark == RelicRecoveryVuMark.CENTER) {
             map.setGoal(11, 5);
             moveState = MoveState.STRAFE_TOWARDS_GOAL;
-            conveyorVert.setTargetPosition(2);
-            conveyorHorz.setTargetPosition(2);
-        }
+            top.setTargetPosition(2);
+            front.setTargetPosition(2);
+            if (motorBackLeft.setPower(0) && motorFrontRight.setPower(0)) {
+                front.setPower(2);
+                top.setTargetPosition(2);
+            }
+            else if (vuMark == RelicRecoveryVuMark.LEFT) {
+                map.setGoal(11, 5.647);
+                moveState = MoveState.STRAFE_TOWARDS_GOAL;
+                front.setTargetPosition(2);
+                top.setTargetPosition(2);
+                if (motorBackLeft.setPower(0) && motorFrontRight(0)) {
+                    front.setPower(2);
+                    top.setTargetPosition(2);
+                }
 
-        if (vuMark == RelicRecoveryVuMark.LEFT) {
-            map.setGoal(11, 5.647);
-            moveState = MoveState.STRAFE_TOWARDS_GOAL;
-            conveyorVert.setTargetPosition(2);
-            conveyorHorz.setTargetPosition(2);
-        }
 
-        if (vuMark == RelicRecoveryVuMark.RIGHT) {
-            map.setGoal(11, 4.397);
-            moveState = MoveState.STRAFE_TOWARDS_GOAL;
-            conveyorVert.setTargetPosition(2);
-            conveyorHorz.setTargetPosition(2);
+            else if (vuMark == RelicRecoveryVuMark.RIGHT) {
+                    map.setGoal(11, 4.397);
+                    moveState = MoveState.STRAFE_TOWARDS_GOAL;
+                    if (motorBackLeft.setPower(0) && motorFrontRight.setPower(0)) {
+                        front.setPower(2);
+                        top.setTargetPosition(2);
+                    }
+                }
+            }
         }
     }
 }
+
+
 
 
 

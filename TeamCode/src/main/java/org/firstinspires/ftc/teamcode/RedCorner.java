@@ -25,8 +25,8 @@ public class RedCorner extends AutonomousBase{
     private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
     private DcMotor motorBackRight;
-    private DcMotor conveyorHorz;
-    private DcMotor conveyorVert;
+    private DcMotor top;
+    private DcMotor front;
 
     private Servo servo;
 
@@ -35,8 +35,8 @@ public class RedCorner extends AutonomousBase{
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backLeft");
         motorBackLeft = hardwareMap.dcMotor.get("backRight");
-        conveyorHorz = hardwareMap.dcMotor.get("conveyorHortz");
-        conveyorVert = hardwareMap.dcMotor.get("conveyorVert");
+        top = hardwareMap.dcMotor.get("top");
+        front = hardwareMap.dcMotor.get("front");
         servo = hardwareMap.servo.get("servo");
     }
 
@@ -141,22 +141,22 @@ public class RedCorner extends AutonomousBase{
         if (vuMark == RelicRecoveryVuMark.CENTER) {
             map.setGoal(11, 5);
             moveState = AutonomousBase.MoveState.STRAFE_TOWARDS_GOAL;
-            conveyorVert.setTargetPosition(2);
-            conveyorHorz.setTargetPosition(2);
+            front.setTargetPosition(2);
+            top.setTargetPosition(2);
         }
 
         if (vuMark == RelicRecoveryVuMark.LEFT) {
             map.setGoal(11, 5.647);
             moveState = AutonomousBase.MoveState.STRAFE_TOWARDS_GOAL;
-            conveyorVert.setTargetPosition(2);
-            conveyorHorz.setTargetPosition(2);
+            front.setTargetPosition(2);
+            top.setTargetPosition(2);
         }
 
         if (vuMark == RelicRecoveryVuMark.RIGHT) {
             map.setGoal(11, 4.397);
             moveState = AutonomousBase.MoveState.STRAFE_TOWARDS_GOAL;
-            conveyorVert.setTargetPosition(2);
-            conveyorHorz.setTargetPosition(2);
+            front.setTargetPosition(2);
+            top.setTargetPosition(2);
         }
     }
 }

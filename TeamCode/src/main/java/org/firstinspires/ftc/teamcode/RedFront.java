@@ -20,12 +20,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import static com.sun.tools.javac.util.Constants.format;
 
-/**
- * Created by emilydkiehl on 11/1/17
- */
-
 @Autonomous(name="RedFront", group="Red")
-class RedFront extends AutonomousBase {
+class RedFront extends AutonomousBase   {
 
     double xTime;
     int i;
@@ -37,7 +33,7 @@ class RedFront extends AutonomousBase {
     private Servo servo;
     private VuforiaLocalizer vuforia;
 
-    public void init() {
+    public void init()  {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backLeft");
@@ -48,9 +44,9 @@ class RedFront extends AutonomousBase {
 
     public void gameState() {
         super.gameState();
-        switch (gameState) {
+        switch (gameState)  {
             case 0: //Start
-                if (actualRuntime() > 1) {
+                if (actualRuntime() > 1)    {
                     gameState = 1;
                     sTime = getRuntime();
                     map.setRobot(10, 2);
@@ -103,7 +99,7 @@ class RedFront extends AutonomousBase {
 
                 relicTrackables.activate();
 
-                while (true) {
+                while (true)    {
                     RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
                     /**
@@ -114,7 +110,7 @@ class RedFront extends AutonomousBase {
                      * RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
                      */
 
-                    if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+                    if (vuMark != RelicRecoveryVuMark.UNKNOWN)  {
                         telemetry.addData("VuMark", "%s visible", vuMark);  }
 
                 /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
@@ -129,27 +125,27 @@ class RedFront extends AutonomousBase {
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
         RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
-        if (vuMark == RelicRecoveryVuMark.CENTER) {
+        if (vuMark == RelicRecoveryVuMark.CENTER)   {
             map.setGoal(11, 5);
             moveState = MoveState.STRAFE_TOWARDS_GOAL;
             top.setTargetPosition(2);
             front.setTargetPosition(2);
-            if (motorBackLeft(0) && motorFrontRight(0)) {
+            if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
                 front.setPower(2);
                 top.setTargetPosition(2);   }
-        else if (vuMark == RelicRecoveryVuMark.LEFT) {
+        else if (vuMark == RelicRecoveryVuMark.LEFT)    {
             map.setGoal(11, 5.647);
             moveState = MoveState.STRAFE_TOWARDS_GOAL;
             top.setTargetPosition(2);
             front.setTargetPosition(2);
-            if (motorBackLeft(0) && motorFrontRight(0)) {
+            if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
                 front.setPower(2);
                 top.setTargetPosition(2);   }
-        else if (vuMark == RelicRecoveryVuMark.RIGHT) {
+        else if (vuMark == RelicRecoveryVuMark.RIGHT)   {
             map.setGoal(11, 4.397);
             moveState = MoveState.STRAFE_TOWARDS_GOAL;
             front.setPower(2);
             top.setTargetPosition(2);   }
-            if (motorBackLeft(0) && motorFrontRight(0)) {
+            if (map.distanceToGoal() > DISTANCE_TOLERANCE)  {
                 front.setPower(2);
                 top.setTargetPosition(2);   }   }   }   }   }

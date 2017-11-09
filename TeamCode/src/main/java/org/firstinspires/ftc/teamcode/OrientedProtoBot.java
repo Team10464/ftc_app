@@ -11,15 +11,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-/**
- * Created by emilydkiehl on 10/1/17.
- */
 @TeleOp(name="Oriented Protobot Tank", group="Protobot")
-public class OrientedProtoBot extends OpMode {
+class OrientedProtoBot extends OpMode {
 
     // State used for updating telemetry
-    Orientation angles;
-
+    private Orientation angles;
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
@@ -30,7 +26,6 @@ public class OrientedProtoBot extends OpMode {
     private Servo mobert = null;
     private double left;
     private double right;
-
     private BNO055IMU imu;
 
     public void init() {
@@ -44,10 +39,7 @@ public class OrientedProtoBot extends OpMode {
         front = hardwareMap.dcMotor.get("front");
         left = 0.0;
         right = 1.0;
-
-
-        BNO055IMU imu;
-    }
+        BNO055IMU imu;  }
 
     public void loop() {
         double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
@@ -66,47 +58,41 @@ public class OrientedProtoBot extends OpMode {
         if (gamepad2.b) {
             if(left < 1.0 && right > 0.0){
                 left += .01;
-                right -= .01;
-            }
+                right -= .01;   }
             franny.setPosition(left);
-            mobert.setPosition(right);
-        }else if (gamepad2.x) {
+            mobert.setPosition(right);  }
+        else if (gamepad2.x) {
             if(left > 0.0 && right < 1.0){
                 left -= .01;
-                right += .01;
-            }
+                right += .01;   }
             franny.setPosition(left);
-            mobert.setPosition(right);
-        }else{
-        }
+            mobert.setPosition(right);  }
+        else{  }
 
         if (gamepad2.left_bumper) {
             if(left < 1.0){
                 left += .01;
             }
-            franny.setPosition(left);
-        }else if (gamepad2.left_trigger > .7) {
+            franny.setPosition(left);   }
+        else if (gamepad2.left_trigger > .7) {
             if(left > 0.0){
                 left -= .01;
             }
-            franny.setPosition(left);
-        }else{
-        }
+            franny.setPosition(left);   }
+        else{  }
+
         if (gamepad2.right_bumper) {
             if(right > 0){
-                right -= .01;
-            }
-            mobert.setPosition(right);
-        }else if (gamepad2.right_trigger > .7) {
+                right -= .01;   }
+            mobert.setPosition(right);  }
+        else if (gamepad2.right_trigger > .7) {
             if(right < 1){
-                right += .01;
-            }
-            mobert.setPosition(right);
-        }else {
-        }
+                right += .01;   }
+            mobert.setPosition(right);  }
+        else {  }
+
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
-
 
         if (gamepad1.left_stick_button) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
@@ -119,30 +105,21 @@ public class OrientedProtoBot extends OpMode {
             motorFrontRight.setPower(v5);
             motorFrontLeft.setPower(v6);
             motorBackRight.setPower(v7);
-            motorBackLeft.setPower(v8);
-        }
-           // top.setPower(gamepad2.right_stick_x * .5);
-           // front.setPower(gamepad2.left_stick_x * .5);
+            motorBackLeft.setPower(v8); }
+
+            // top.setPower(gamepad2.right_stick_x * .5);
+            // front.setPower(gamepad2.left_stick_x * .5);
 
             if (gamepad2.dpad_up) {
-                top.setPower(-0.45);
-            } else if (gamepad2.dpad_down) {
-                top.setPower(0.45);
-            } else {
-                top.setPower(0);
-            }
+                top.setPower(-0.45);    }
+            else if (gamepad2.dpad_down) {
+                top.setPower(0.45); }
+            else {
+                top.setPower(0);    }
 
             if (gamepad2.y) {
-                front.setPower(-0.7);
-            } else if (gamepad2.a) {
-                front.setPower(0.35);
-            } else {
-                front.setPower(0);
-            }
-        }
-    }
-
-
-
-
-
+                front.setPower(-0.7);   }
+            else if (gamepad2.a) {
+                front.setPower(0.35);   }
+            else {
+                front.setPower(0);  }   }   }

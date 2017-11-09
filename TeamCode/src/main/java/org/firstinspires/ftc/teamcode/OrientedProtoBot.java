@@ -71,13 +71,11 @@ class OrientedProtoBot extends OpMode {
 
         if (gamepad2.left_bumper) {
             if(left < 1.0){
-                left += .01;
-            }
+                left += .01;    }
             franny.setPosition(left);   }
         else if (gamepad2.left_trigger > .7) {
             if(left > 0.0){
-                left -= .01;
-            }
+                left -= .01;    }
             franny.setPosition(left);   }
         else{  }
 

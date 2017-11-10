@@ -46,7 +46,7 @@ class RedFront extends AutonomousBase   {
         super.gameState();
         switch (gameState)  {
             case 0: //Start
-                if (actualRuntime() > 1)    {
+                if (actualRuntime() > 0)    {
                     gameState = 1;
                     sTime = getRuntime();
                     map.setRobot(10, 2);

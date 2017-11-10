@@ -26,6 +26,7 @@ class OrientedProtoBot extends OpMode {
     private Servo mobert = null;
     private double left;
     private double right;
+    private double pushy;
     private BNO055IMU imu;
 
     public void init() {
@@ -39,6 +40,7 @@ class OrientedProtoBot extends OpMode {
         front = hardwareMap.dcMotor.get("front");
         left = 0.0;
         right = 1.0;
+        pushy = 0;
         BNO055IMU imu;  }
 
     public void loop() {
@@ -93,18 +95,20 @@ class OrientedProtoBot extends OpMode {
         telemetry.addData("Right", right);
 
         if (gamepad1.left_stick_button) {
+            pushy = 1;  }
+
+        if (pushy == 1) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
                     AngleUnit.DEGREES);
-            final double v5 = r * Math.cos(angleAngle) + rightX + angles.firstAngle;
-            final double v6 = r * Math.sin(angleAngle) + rightX + angles.firstAngle;
-            final double v7 = r * Math.sin(angleAngle) + rightX + angles.firstAngle;
-            final double v8 = r * Math.cos(angleAngle) + rightX + angles.firstAngle;
-        }
+            final double v5 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
+            final double v6 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
+            final double v7 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
+            final double v8 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
 
             motorFrontRight.setPower(v5);
             motorFrontLeft.setPower(v6);
             motorBackRight.setPower(v7);
-            motorBackLeft.setPower(v8);
+            motorBackLeft.setPower(v8); }
 
             // top.setPower(gamepad2.right_stick_x * .5);
             // front.setPower(gamepad2.left_stick_x * .5);

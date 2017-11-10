@@ -125,7 +125,4 @@ class OrientedProtoBot extends OpMode {
             else if (gamepad2.a) {
                 front.setPower(0.35);   }
             else {
-                front.setPower(0);
-            }
-    }
-}
+                front.setPower(0);  }   }   }

@@ -14,9 +14,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import static com.sun.tools.javac.util.Constants.format;
 
-/**
- * Created by ekbir on 11/8/2017.
- */
 //@Autonomous(name="RedCorner", group="Red")
 public class RedCorner extends AutonomousBase{
 
@@ -37,8 +34,7 @@ public class RedCorner extends AutonomousBase{
         motorBackLeft = hardwareMap.dcMotor.get("backRight");
         top = hardwareMap.dcMotor.get("top");
         front = hardwareMap.dcMotor.get("front");
-        servo = hardwareMap.servo.get("servo");
-    }
+        servo = hardwareMap.servo.get("servo"); }
 
 
     double xTime;
@@ -49,14 +45,13 @@ public class RedCorner extends AutonomousBase{
 
     public void gameState() {
         super.gameState();
-        switch (gameState) {
+        switch (gameState)  {
             case 0: //Start
-                if (actualRuntime() > 1) {
+                if (actualRuntime() > 1)    {
                     gameState = 1;
                     sTime = getRuntime();
                     map.setRobot(10, 8);
-                    servo.setPosition(1);
-                }
+                    servo.setPosition(1);   }
                 break;
             case 1:
                 sensorColor = hardwareMap.colorSensor.get("color");
@@ -64,14 +59,12 @@ public class RedCorner extends AutonomousBase{
                     motorBackLeft.setTargetPosition(2);
                     motorBackLeft.setPower(.6);
                     motorFrontRight.setTargetPosition(2);
-                    motorFrontRight.setPower(-.6);
-                }
+                    motorFrontRight.setPower(-.6);  }
                 if (sensorColor.red() < sensorColor.blue()) {
                     motorBackLeft.setTargetPosition(2);
                     motorBackLeft.setPower(-.6);
                     motorFrontRight.setTargetPosition(2);
-                    motorFrontRight.setPower(.6);
-                }
+                    motorFrontRight.setPower(.6);   }
 
                 gameState = 3;
                 break;
@@ -107,7 +100,7 @@ public class RedCorner extends AutonomousBase{
 
                 relicTrackables.activate();
 
-                while (1 == 1) {
+                while (1 == 1)  {
                     RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
 
 
@@ -119,19 +112,16 @@ public class RedCorner extends AutonomousBase{
                      * RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
                      */
 
-                    if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+                    if (vuMark != RelicRecoveryVuMark.UNKNOWN)  {
 
                         telemetry.addData("VuMark", "%s visible", vuMark);
-                        telemetry.addData("null?", 1);
-                    }
+                        telemetry.addData("null?", 1);  }
                 /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
                  * it is perhaps unlikely that you will actually need to act on this pose information, but
                  * we illustrate it nevertheless, for completeness. */
                     OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
                     telemetry.addData("Pose", format(pose));
-                    telemetry.addData("VuMark", "not visible");
-                }
-        }
+                    telemetry.addData("VuMark", "not visible"); }   }
 
         telemetry.update();
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
@@ -142,22 +132,16 @@ public class RedCorner extends AutonomousBase{
             map.setGoal(11, 5);
             moveState = AutonomousBase.MoveState.STRAFE_TOWARDS_GOAL;
             front.setTargetPosition(2);
-            top.setTargetPosition(2);
-        }
+            top.setTargetPosition(2);   }
 
         if (vuMark == RelicRecoveryVuMark.LEFT) {
             map.setGoal(11, 5.647);
             moveState = AutonomousBase.MoveState.STRAFE_TOWARDS_GOAL;
             front.setTargetPosition(2);
-            top.setTargetPosition(2);
-        }
+            top.setTargetPosition(2);   }
 
-        if (vuMark == RelicRecoveryVuMark.RIGHT) {
+        if (vuMark == RelicRecoveryVuMark.RIGHT)    {
             map.setGoal(11, 4.397);
             moveState = AutonomousBase.MoveState.STRAFE_TOWARDS_GOAL;
             front.setTargetPosition(2);
-            top.setTargetPosition(2);
-        }
-    }
-}
-
+            top.setTargetPosition(2);   }   }   }

@@ -95,15 +95,16 @@ class OrientedProtoBot extends OpMode {
         if (gamepad1.left_stick_button) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
                     AngleUnit.DEGREES);
-            final double v5 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
-            final double v6 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
-            final double v7 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
-            final double v8 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
+            final double v5 = r * Math.cos(angles.firstAngle) + rightX;
+            final double v6 = r * Math.sin(angles.firstAngle) + rightX;
+            final double v7 = r * Math.sin(angles.firstAngle) + rightX;
+            final double v8 = r * Math.cos(angles.firstAngle) + rightX;
+        }
 
             motorFrontRight.setPower(v5);
             motorFrontLeft.setPower(v6);
             motorBackRight.setPower(v7);
-            motorBackLeft.setPower(v8); }
+            motorBackLeft.setPower(v8);
 
             // top.setPower(gamepad2.right_stick_x * .5);
             // front.setPower(gamepad2.left_stick_x * .5);
@@ -120,4 +121,7 @@ class OrientedProtoBot extends OpMode {
             else if (gamepad2.a) {
                 front.setPower(0.35);   }
             else {
-                front.setPower(0);  }   }   }
+                front.setPower(0);
+            }
+    }
+}

@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="RedFront", group="Red")
-class RedFront extends AutonomousBase {
+@Autonomous(name="BlueFront", group="Blue")
+class BlueFront extends AutonomousBase {
 
     double xTime;
     int i;
@@ -37,7 +37,7 @@ class RedFront extends AutonomousBase {
                 if (actualRuntime() > 0) {
                     gameState = 1;
                     sTime = getRuntime();
-                    map.setRobot(10, 2);
+                    map.setRobot(2, 2);
                     servo.setPosition(.675);
                 }
                 break;
@@ -61,18 +61,15 @@ class RedFront extends AutonomousBase {
                 gameState = 3;
                 break;
 
-            case 3: //move to save zone
-
-            map.setGoal(11, 5);
-            moveState = MoveState.STRAFE_TOWARDS_GOAL;
+            case 3: //move to safe zone
+                map.setGoal(2, 5);
+                moveState = MoveState.STRAFE_TOWARDS_GOAL;
 
 
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     front.setPower(2);
                     top.setTargetPosition(2);
-
-            }
+                }
         }
     }
 }
-

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode;//:)
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -11,8 +11,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@TeleOp(name="Oriented Protobot Tank", group="Protobot")
-class OrientedProtoBot extends OpMode {
+@TeleOp(name="DriverControl1718", group="Protobot")
+
+class DriverControl1718 extends OpMode {
 
     // State used for updating telemetry
     private Orientation angles;

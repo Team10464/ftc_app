@@ -4,16 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+@TeleOp(name="FlatStanleyKidsCode", group="Protobot")
 
-@TeleOp(name="Mechanum Protobot Tank", group="Protobot")
-
-public class MechanumProtoBot extends OpMode    {
+public class FlatStanleyKidsCode extends OpMode    {
 
     // State used for updating telemetry
-    Orientation angles;
-    Acceleration gravity;
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
@@ -38,5 +33,3 @@ public class MechanumProtoBot extends OpMode    {
         motorFrontLeft.setPower(v2);
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4); }   }
-
-

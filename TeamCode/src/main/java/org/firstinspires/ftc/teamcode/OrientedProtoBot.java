@@ -11,24 +11,21 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-/**
- * Created by emilydkiehl on 10/1/17.
- */
 @TeleOp(name="Oriented Protobot Tank", group="Protobot")
-public class OrientedProtoBot extends OpMode {
+class OrientedProtoBot extends OpMode {
 
     // State used for updating telemetry
-    Orientation angles;
-
+    private Orientation angles;
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
     private DcMotor motorBackLeft;
     private DcMotor motorBackRight;
-    private DcMotor conveyorHorz;
-    private DcMotor conveyorVert;
-    private Servo franny;
-    private Servo mobert;
-
+    private DcMotor top;
+    private DcMotor front;
+    private Servo franny = null;
+    private Servo mobert = null;
+    private double left;
+    private double right;
     private BNO055IMU imu;
 
     public void init() {
@@ -38,10 +35,10 @@ public class OrientedProtoBot extends OpMode {
         motorBackLeft = hardwareMap.dcMotor.get("backRight");
         franny = hardwareMap.servo.get("franny");
         mobert = hardwareMap.servo.get("mobert");
-        //  conveyorHorz = hardwareMap.dcMotor.get("conveyorHortz");
-        //  conveyorVert = hardwareMap.dcMotor.get("conveyorVert");
-
-
+        top = hardwareMap.dcMotor.get("top");
+        front = hardwareMap.dcMotor.get("front");
+        left = 0.0;
+        right = 1.0;
         BNO055IMU imu;
     }
 
@@ -59,17 +56,51 @@ public class OrientedProtoBot extends OpMode {
         motorBackRight.setPower(v3);
         motorBackLeft.setPower(v4);
 
-        if (gamepad2.left_bumper)
-        {
-            mobert.setPosition(0);
-            franny.setPosition(1);
-
-        } else if (gamepad2.right_bumper)
-        {
-            mobert.setPosition(1);
-            franny.setPosition(0);
+        if (gamepad2.b) {
+            if (left < 1.0 && right > 0.0) {
+                left += .01;
+                right -= .01;
+            }
+            franny.setPosition(left);
+            mobert.setPosition(right);
+        } else if (gamepad2.x) {
+            if (left > 0.0 && right < 1.0) {
+                left -= .01;
+                right += .01;
+            }
+            franny.setPosition(left);
+            mobert.setPosition(right);
+        } else {
         }
 
+        if (gamepad2.left_bumper) {
+            if (left < 1.0) {
+                left += .01;
+            }
+            franny.setPosition(left);
+        } else if (gamepad2.left_trigger > .7) {
+            if (left > 0.0) {
+                left -= .01;
+            }
+            franny.setPosition(left);
+        } else {
+        }
+
+        if (gamepad2.right_bumper) {
+            if (right > 0) {
+                right -= .01;
+            }
+            mobert.setPosition(right);
+        } else if (gamepad2.right_trigger > .7) {
+            if (right < 1) {
+                right += .01;
+            }
+            mobert.setPosition(right);
+        } else {
+        }
+
+        telemetry.addData("Left", left);
+        telemetry.addData("Right", right);
 
         if (gamepad1.left_stick_button) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
@@ -83,35 +114,25 @@ public class OrientedProtoBot extends OpMode {
             motorFrontLeft.setPower(v6);
             motorBackRight.setPower(v7);
             motorBackLeft.setPower(v8);
+        }
 
+        // top.setPower(gamepad2.right_stick_x * .5);
+        // front.setPower(gamepad2.left_stick_x * .5);
+
+        if (gamepad2.dpad_up) {
+            top.setPower(-0.45);
+        } else if (gamepad2.dpad_down) {
+            top.setPower(0.45);
+        } else {
+            top.setPower(0);
+        }
+
+        if (gamepad2.y) {
+            front.setPower(-0.7);
+        } else if (gamepad2.a) {
+            front.setPower(0.35);
+        } else {
+            front.setPower(0);
         }
     }
 }
-//
-
-//        if (gamepad2.x){
-//            conveyorHorz.setPower(1);
-//            }
-//            else if (gamepad2.a)
-//            {
-//            conveyorHorz.setPower(-1);
-//            }
-//            else
-//            {
-//            conveyorHorz.setPower(0);
-//            }
-
-//        if (gamepad2.y)
-//        {
-//            conveyorVert.setPower(1);
-//            }
-//            else if (gamepad2.b)
-//            {
-//            conveyorVert.setPower(-1);
-//            }
-//            else
-//            {
-//            conveyorVert.setPower(0);
-//            }
-//        }
-//    }

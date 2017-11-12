@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode;//:)
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -11,10 +11,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@TeleOp(name="Mechanum Protobot Tank", group="Protobot")
+@TeleOp(name="DriverControl1718", group="Protobot")
 
-public class MechanumProtoBot extends OpMode    {
+class DriverControl1718 extends OpMode {
 
+    // State used for updating telemetry
     private Orientation angles;
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
@@ -46,10 +47,10 @@ public class MechanumProtoBot extends OpMode    {
         double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
-        final double v1 = r * Math.sin(robotAngle) + rightX;
-        final double v2 = r * Math.cos(robotAngle) + rightX;
-        final double v3 = r * Math.cos(robotAngle) - rightX;
-        final double v4 = r * Math.sin(robotAngle) - rightX;
+        final double v1 = r * Math.sin(robotAngle) - rightX;
+        final double v2 = r * Math.cos(robotAngle) - rightX;
+        final double v3 = r * Math.cos(robotAngle) + rightX;
+        final double v4 = r * Math.sin(robotAngle) + rightX;
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
@@ -136,6 +137,3 @@ public class MechanumProtoBot extends OpMode    {
         }
     }
 }
-
-
-

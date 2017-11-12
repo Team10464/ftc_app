@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="BlueFront", group="Blue")
+@Autonomous(name="Blue Front", group="Blue")
 class BlueFront extends AutonomousBase {
 
     double xTime;

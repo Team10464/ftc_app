@@ -43,7 +43,7 @@ class RedFront extends AutonomousBase {
                 if (actualRuntime() > 0) {
                     gameState = 1;
                     sTime = getRuntime();
-                    map.setRobot(10, 8);
+                    map.setRobot(10, 2);
                     servo.setPosition(.675);
                 }
                 break;

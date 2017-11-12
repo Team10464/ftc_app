@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 @Autonomous(name="RedCorner", group="Red")
-class RedCorner extends AutonomousBase {
+class RedFront extends AutonomousBase {
 
     double xTime;
     int i;
@@ -69,9 +69,7 @@ class RedCorner extends AutonomousBase {
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     front.setPower(2);
                     top.setTargetPosition(2);
-                }
+            }
         }
     }
 }
-
-

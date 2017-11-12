@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import static com.sun.tools.javac.util.Constants.format;
 
-//@Autonomous(name="RedCorner", group="Red")
+@Autonomous(name="Red Corner", group="Red")
 public class RedCorner extends AutonomousBase{
 
 
@@ -24,8 +25,8 @@ public class RedCorner extends AutonomousBase{
     private DcMotor motorBackRight;
     private DcMotor top;
     private DcMotor front;
-
     private Servo servo;
+
 
     public void init() {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");

@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -14,6 +15,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @TeleOp(name="Mechanum Protobot Tank", group="Protobot")
 
 public class MechanumProtoBot extends OpMode    {
+
+    ElapsedTime runtime = new ElapsedTime();
 
     private Orientation angles;
     private DcMotor motorFrontRight;
@@ -40,6 +43,7 @@ public class MechanumProtoBot extends OpMode    {
         front = hardwareMap.dcMotor.get("front");
         left = 0.0;
         right = 1.0;
+        runtime.reset();
         BNO055IMU imu;
     }
 
@@ -104,7 +108,7 @@ public class MechanumProtoBot extends OpMode    {
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
 
-        if (gamepad1.left_stick_button) {
+        if (gamepad1.left_stick_button && runtime.seconds() > 0.3) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
                     AngleUnit.DEGREES);
             final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
@@ -116,6 +120,8 @@ public class MechanumProtoBot extends OpMode    {
             motorFrontLeft.setPower(v6);
             motorBackRight.setPower(v7);
             motorBackLeft.setPower(v8);
+
+            runtime.reset();
         }
 
         // top.setPower(gamepad2.right_stick_x * .5);

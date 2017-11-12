@@ -28,7 +28,8 @@ public class MechanumProtoBot extends OpMode    {
     private double right;
     private BNO055IMU imu;
 
-    public void init() {
+    public void init()
+    {
         motorFrontRight = hardwareMap.dcMotor.get("frontRight");
         motorFrontLeft = hardwareMap.dcMotor.get("frontLeft");
         motorBackRight = hardwareMap.dcMotor.get("backLeft");
@@ -42,14 +43,15 @@ public class MechanumProtoBot extends OpMode    {
         BNO055IMU imu;
     }
 
-    public void loop() {
+    public void loop()
+    {
         double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
         final double v1 = r * Math.sin(robotAngle) + rightX;
-        final double v2 = r * Math.cos(robotAngle) + rightX;
+        final double v2 = r * Math.cos(robotAngle) - rightX;
         final double v3 = r * Math.cos(robotAngle) - rightX;
-        final double v4 = r * Math.sin(robotAngle) - rightX;
+        final double v4 = r * Math.sin(robotAngle) + rightX;
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
@@ -105,10 +107,10 @@ public class MechanumProtoBot extends OpMode    {
         if (gamepad1.left_stick_button) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
                     AngleUnit.DEGREES);
-            final double v5 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
-            final double v6 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
-            final double v7 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
-            final double v8 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
+            final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
+            final double v6 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
+            final double v7 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
+            final double v8 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
 
             motorFrontRight.setPower(v5);
             motorFrontLeft.setPower(v6);
@@ -120,9 +122,9 @@ public class MechanumProtoBot extends OpMode    {
         // front.setPower(gamepad2.left_stick_x * .5);
 
         if (gamepad2.dpad_up) {
-            top.setPower(-0.45);
+            top.setPower(-0.3);
         } else if (gamepad2.dpad_down) {
-            top.setPower(0.45);
+            top.setPower(0.3);
         } else {
             top.setPower(0);
         }

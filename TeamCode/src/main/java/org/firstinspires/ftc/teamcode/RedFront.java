@@ -68,7 +68,7 @@ class RedFront extends AutonomousBase {
                 break;
 
             case 3: //move to save zone
-                map.setGoal(10, 9);
+                map.setGoal(10, 5);
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
 
 

@@ -4,17 +4,11 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
-@Autonomous(name="RedCorner", group="Red")
-class RedCorner extends AutonomousBase {
+@Autonomous(name="Blue Front", group="Blue")
+class BlueCorner extends AutonomousBase {
 
     double xTime;
     int i;
@@ -43,7 +37,7 @@ class RedCorner extends AutonomousBase {
                 if (actualRuntime() > 0) {
                     gameState = 1;
                     sTime = getRuntime();
-                    map.setRobot(10,8);
+                    map.setRobot(2,8);
                     servo.setPosition(.675);
                 }
                 break;
@@ -67,8 +61,8 @@ class RedCorner extends AutonomousBase {
                 gameState = 3;
                 break;
 
-            case 3: //move to save zone
-                map.setGoal(9,10.5);
+            case 3: //move to safe zone
+                map.setGoal(3,10);
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
 
 
@@ -79,3 +73,4 @@ class RedCorner extends AutonomousBase {
         }
     }
 }
+

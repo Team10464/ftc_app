@@ -52,10 +52,10 @@ public class MechanumProtoBot extends OpMode    {
         double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
-        final double v1 = r * Math.sin(robotAngle) + rightX;
-        final double v2 = r * Math.cos(robotAngle) + rightX;
-        final double v3 = r * Math.cos(robotAngle) - rightX;
-        final double v4 = r * Math.sin(robotAngle) - rightX;
+        final double v1 = r * Math.sin(robotAngle) - rightX;
+        final double v2 = r * Math.cos(robotAngle) - rightX;
+        final double v3 = r * Math.cos(robotAngle) + rightX;
+        final double v4 = r * Math.sin(robotAngle) + rightX;
 
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
@@ -111,10 +111,10 @@ public class MechanumProtoBot extends OpMode    {
         if (gamepad1.left_stick_button && runtime.seconds() > 0.3) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
                     AngleUnit.DEGREES);
-            final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
-            final double v6 = r * Math.cos(robotAngle) + rightX + angles.firstAngle;
-            final double v7 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
-            final double v8 = r * Math.sin(robotAngle) - rightX + angles.firstAngle;
+            final double v5 = r * Math.sin(robotAngle + angles.firstAngle) + rightX;
+            final double v6 = r * Math.cos(robotAngle + angles.firstAngle) + rightX;
+            final double v7 = r * Math.cos(robotAngle + angles.firstAngle) - rightX;
+            final double v8 = r * Math.sin(robotAngle + angles.firstAngle) - rightX;
 
             motorFrontRight.setPower(v5);
             motorFrontLeft.setPower(v6);
@@ -138,7 +138,7 @@ public class MechanumProtoBot extends OpMode    {
         if (gamepad2.y) {
             front.setPower(0.7);
         } else if (gamepad2.a) {
-            front.setPower(-0.35);
+            front.setPower(-0.7);
         } else {
             front.setPower(0);
         }

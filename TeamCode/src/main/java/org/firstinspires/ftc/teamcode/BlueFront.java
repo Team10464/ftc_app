@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 @Autonomous(name="Blue Front", group="Blue")
 class BlueFront extends AutonomousBase {
-//hello
+
     double xTime;
     int i;
     private OpenGLMatrix lastLocation;
@@ -62,14 +62,14 @@ class BlueFront extends AutonomousBase {
                 break;
 
             case 3: //move to safe zone
-                map.setGoal(2, 5);
+                map.setGoal(1.25, 5);
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
 
 
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     front.setPower(2);
                     top.setTargetPosition(2);
-                }
+            }
         }
     }
 }

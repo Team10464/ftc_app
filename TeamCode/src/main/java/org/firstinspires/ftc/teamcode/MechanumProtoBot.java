@@ -52,6 +52,8 @@ public class MechanumProtoBot extends OpMode    {
         double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
+                AngleUnit.DEGREES);
         final double v1 = r * Math.sin(robotAngle) - rightX;
         final double v2 = r * Math.cos(robotAngle) - rightX;
         final double v3 = r * Math.cos(robotAngle) + rightX;
@@ -76,7 +78,8 @@ public class MechanumProtoBot extends OpMode    {
             }
             franny.setPosition(left);
             mobert.setPosition(right);
-        } else {
+        }
+        else {
         }
 
         if (gamepad2.left_bumper) {
@@ -89,7 +92,8 @@ public class MechanumProtoBot extends OpMode    {
                 left -= .01;
             }
             franny.setPosition(left);
-        } else {
+        }
+        else {
         }
 
         if (gamepad2.right_bumper) {
@@ -107,10 +111,11 @@ public class MechanumProtoBot extends OpMode    {
 
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
+        telemetry.addData("angle", angles.firstAngle);
+
 
         if (gamepad1.left_stick_button && runtime.seconds() > 0.3) {
-            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
-                    AngleUnit.DEGREES);
+
             final double v5 = r * Math.sin(robotAngle + angles.firstAngle) + rightX;
             final double v6 = r * Math.cos(robotAngle + angles.firstAngle) + rightX;
             final double v7 = r * Math.cos(robotAngle + angles.firstAngle) - rightX;

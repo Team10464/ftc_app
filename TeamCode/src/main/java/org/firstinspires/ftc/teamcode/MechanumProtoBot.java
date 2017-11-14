@@ -52,11 +52,9 @@ public class MechanumProtoBot extends OpMode    {
         double r = Math.hypot(gamepad1.right_stick_x, gamepad1.left_stick_y);
         double robotAngle = Math.atan2(gamepad1.right_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
         double rightX = gamepad1.left_stick_x;
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
-                AngleUnit.DEGREES);
-        final double v1 = r * Math.sin(robotAngle) - rightX;
+        final double v1 = r * Math.sin(robotAngle) + rightX;
         final double v2 = r * Math.cos(robotAngle) - rightX;
-        final double v3 = r * Math.cos(robotAngle) + rightX;
+        final double v3 = r * Math.cos(robotAngle) - rightX;
         final double v4 = r * Math.sin(robotAngle) + rightX;
 
         motorFrontRight.setPower(v1);
@@ -78,8 +76,7 @@ public class MechanumProtoBot extends OpMode    {
             }
             franny.setPosition(left);
             mobert.setPosition(right);
-        }
-        else {
+        } else {
         }
 
         if (gamepad2.left_bumper) {
@@ -92,8 +89,7 @@ public class MechanumProtoBot extends OpMode    {
                 left -= .01;
             }
             franny.setPosition(left);
-        }
-        else {
+        } else {
         }
 
         if (gamepad2.right_bumper) {
@@ -111,15 +107,14 @@ public class MechanumProtoBot extends OpMode    {
 
         telemetry.addData("Left", left);
         telemetry.addData("Right", right);
-        telemetry.addData("angle", angles.firstAngle);
-//hello Emily  op
 
         if (gamepad1.left_stick_button && runtime.seconds() > 0.3) {
-
-            final double v5 = r * Math.sin(robotAngle + angles.firstAngle) + rightX;
-            final double v6 = r * Math.cos(robotAngle + angles.firstAngle) + rightX;
-            final double v7 = r * Math.cos(robotAngle + angles.firstAngle) - rightX;
-            final double v8 = r * Math.sin(robotAngle + angles.firstAngle) - rightX;
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX,
+                    AngleUnit.DEGREES);
+            final double v5 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
+            final double v6 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
+            final double v7 = r * Math.cos(robotAngle) - rightX + angles.firstAngle;
+            final double v8 = r * Math.sin(robotAngle) + rightX + angles.firstAngle;
 
             motorFrontRight.setPower(v5);
             motorFrontLeft.setPower(v6);
@@ -141,9 +136,9 @@ public class MechanumProtoBot extends OpMode    {
         }
 
         if (gamepad2.y) {
-            front.setPower(0.7);
-        } else if (gamepad2.a) {
             front.setPower(-0.7);
+        } else if (gamepad2.a) {
+            front.setPower(0.35);
         } else {
             front.setPower(0);
         }

@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
-@Autonomous(name="Blue Front", group="Blue")
+@Autonomous(name="Blue Corner", group="Blue")
 class BlueCorner extends AutonomousBase {
 
     double xTime;
@@ -62,15 +62,14 @@ class BlueCorner extends AutonomousBase {
                 break;
 
             case 3: //move to safe zone
-                map.setGoal(3,10);
+                map.setGoal(3,10.75);
                 moveState = MoveState.STRAFE_TOWARDS_GOAL;
 
 
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     front.setPower(2);
                     top.setTargetPosition(2);
-                }
+            }
         }
     }
 }
-

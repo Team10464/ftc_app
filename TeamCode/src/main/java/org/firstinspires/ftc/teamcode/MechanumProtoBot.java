@@ -57,6 +57,8 @@ public class MechanumProtoBot extends OpMode    {
         final double v3 = r * Math.cos(robotAngle) + rightX;
         final double v4 = r * Math.sin(robotAngle) + rightX;
 
+        // This is a test change --
+
         motorFrontRight.setPower(v1);
         motorFrontLeft.setPower(v2);
         motorBackRight.setPower(v3);

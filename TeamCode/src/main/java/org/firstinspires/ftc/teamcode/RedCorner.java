@@ -69,7 +69,7 @@ class RedCorner extends AutonomousBase {
                 if (map.distanceToGoal() > DISTANCE_TOLERANCE) {
                     front.setPower(.5);
                     top.setTargetPosition((int) .5);
-                }
+            }
         }
     }
 }
